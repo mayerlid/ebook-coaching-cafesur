@@ -5,721 +5,890 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E-book: Plan de Coaching Gerencial - Cafesur S.A.S.</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#1B4F72;--secondary:#2E75B6;--accent:#E67E22;--dark:#2C3E50;--light:#ECF0F1;--bg:#FAFAFA;--card:#FFF;--text:#333;--text-light:#666;--coffee:#6F4E37;--coffee-light:#D4A574;--green:#27AE60;--success:#2ECC71}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh}
+:root{
+  --primary:#1B4F72;--secondary:#2E75B6;--accent:#E67E22;
+  --dark:#2C3E50;--page:#fffef7;--text:#2c2c2c;--text-light:#555;
+  --coffee:#6F4E37;--coffee-light:#D4A574;--green:#27AE60;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Lora',Georgia,serif;color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:#2c2c3a;background-image:radial-gradient(ellipse at center,#3d3d50 0%,#1e1e2e 100%)}
 
-/* NAVIGATION */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:linear-gradient(135deg,var(--primary),var(--secondary));padding:12px 30px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,.15)}
-.nav-title{color:#fff;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700}
-.nav-controls{display:flex;align-items:center;gap:12px}
-.nav-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 16px;border-radius:25px;cursor:pointer;font-size:.85rem;transition:all .3s;font-family:'Inter',sans-serif}
-.nav-btn:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
-.nav-btn.active{background:rgba(255,255,255,.35)}
-.page-indicator{color:rgba(255,255,255,.9);font-size:.85rem;min-width:60px;text-align:center}
+/* === BOOK WRAPPER === */
+.book-wrap{position:relative;width:92vw;max-width:1100px;height:80vh;display:flex;align-items:center;justify-content:center}
 
-/* SIDEBAR */
-.sidebar{position:fixed;left:-320px;top:60px;bottom:0;width:300px;background:#fff;z-index:99;transition:left .4s;box-shadow:3px 0 20px rgba(0,0,0,.1);overflow-y:auto;padding:20px 0}
-.sidebar.open{left:0}
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:98}
-.sidebar-overlay.open{display:block}
-.toc-item{padding:12px 24px;cursor:pointer;transition:all .2s;border-left:3px solid transparent;font-size:.9rem;color:var(--text-light)}
-.toc-item:hover,.toc-item.active{background:rgba(46,117,182,.08);color:var(--primary);border-left-color:var(--secondary)}
-.toc-item .ch-num{font-weight:700;color:var(--secondary);margin-right:8px}
+/* === COVER VIEW (single page) === */
+.cover-view{width:50%;max-width:520px;height:100%;border-radius:4px 14px 14px 4px;overflow:hidden;
+  box-shadow:4px 4px 30px rgba(0,0,0,.5),0 0 60px rgba(0,0,0,.3);
+  cursor:pointer;transition:transform .4s;position:relative}
+.cover-view:hover{transform:scale(1.01)}
+.cover-view.back{border-radius:14px 4px 4px 14px;box-shadow:-4px 4px 30px rgba(0,0,0,.5),0 0 60px rgba(0,0,0,.3)}
+.cover-inner{width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:40px 30px;position:relative;overflow:hidden}
+.cover-inner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle,rgba(230,126,34,.08) 0%,transparent 60%);animation:crot 25s linear infinite}
+@keyframes crot{to{transform:rotate(360deg)}}
+.cover-inner .icon{font-size:3rem;margin-bottom:12px}
+.cover-inner h1{font-family:'Playfair Display',serif;font-size:1.8rem;line-height:1.25;margin-bottom:10px;font-weight:900;position:relative}
+.cover-inner .subtitle{font-size:.95rem;color:rgba(255,255,255,.7);margin-bottom:5px;font-weight:300;font-family:'Inter',sans-serif}
+.cover-inner .case{font-size:.88rem;color:var(--coffee-light);font-style:italic;margin-bottom:20px}
+.cover-inner .author-block{border-top:1px solid rgba(255,255,255,.2);padding-top:16px;margin-top:8px}
+.cover-inner .author-name{font-size:1.2rem;font-weight:700;color:#F39C12;letter-spacing:1.5px;font-family:'Playfair Display',serif}
+.cover-inner .author-info{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:5px;font-family:'Inter',sans-serif}
+.cover-hint{position:absolute;bottom:20px;left:0;right:0;text-align:center;font-size:.8rem;color:rgba(255,255,255,.4);font-family:'Inter',sans-serif;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
 
-/* MAIN CONTENT */
-.main{margin-top:60px;height:calc(100vh - 60px);overflow:hidden;position:relative}
-.page{display:none;height:100%;overflow-y:auto;padding:40px;animation:fadeIn .5s}
-.page.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
-.content-wrapper{max-width:800px;margin:0 auto;padding-bottom:80px}
+.back-inner{width:100%;height:100%;background:linear-gradient(135deg,#0f3460 0%,#16213e 60%,#1a1a2e 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:40px 30px}
 
-/* COVER */
-.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 68px);text-align:center;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);border-radius:16px;padding:40px 40px 30px;color:#fff;position:relative;overflow:hidden}
-.cover::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(230,126,34,.1) 0%,transparent 60%);animation:rotate 20s linear infinite}
-@keyframes rotate{to{transform:rotate(360deg)}}
-.cover-icon{font-size:3rem;margin-bottom:12px}
-.cover h1{font-family:'Playfair Display',serif;font-size:2.2rem;margin-bottom:10px;line-height:1.2;position:relative}
-.cover .subtitle{font-size:1.1rem;color:rgba(255,255,255,.8);margin-bottom:6px;font-weight:300}
-.cover .case{font-size:1rem;color:var(--coffee-light);font-style:italic;margin-bottom:20px}
-.cover .author{margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,255,255,.2)}
-.cover .author-name{font-size:1.3rem;font-weight:700;color:#F39C12;letter-spacing:1px}
-.cover .author-info{font-size:.9rem;color:rgba(255,255,255,.6);margin-top:5px}
+/* === SPREAD VIEW (two pages) === */
+.spread-view{display:none;width:100%;height:100%;position:relative;perspective:2200px}
+.spread-view.active{display:flex}
+.spread-book{display:flex;width:100%;height:100%;border-radius:8px;overflow:visible;
+  box-shadow:0 8px 40px rgba(0,0,0,.5),0 0 80px rgba(0,0,0,.25);position:relative}
 
-/* TYPOGRAPHY */
-.chapter-header{margin-bottom:35px;padding-bottom:20px;border-bottom:3px solid var(--secondary)}
-.chapter-header .ch-number{color:var(--secondary);font-size:.9rem;font-weight:600;text-transform:uppercase;letter-spacing:3px;margin-bottom:5px}
-.chapter-header h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);line-height:1.3}
-h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--primary);margin:30px 0 15px}
-h4{font-size:1.1rem;color:var(--secondary);margin:20px 0 10px;font-weight:600}
-p{line-height:1.8;margin-bottom:15px;color:var(--text);font-size:.95rem}
+.page-left,.page-right{width:50%;height:100%;background:var(--page);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.page-left{border-radius:8px 0 0 8px;box-shadow:inset -8px 0 20px rgba(0,0,0,.06)}
+.page-right{border-radius:0 8px 8px 0;box-shadow:inset 8px 0 20px rgba(0,0,0,.06)}
+/* Spine effect */
+.page-left::after{content:'';position:absolute;top:0;right:0;bottom:0;width:12px;
+  background:linear-gradient(90deg,transparent,rgba(0,0,0,.08),rgba(0,0,0,.03));z-index:3;pointer-events:none}
+.page-right::before{content:'';position:absolute;top:0;left:0;bottom:0;width:12px;z-index:3;pointer-events:none;
+  background:linear-gradient(270deg,transparent,rgba(0,0,0,.08),rgba(0,0,0,.03))}
 
-/* CARDS & COMPONENTS */
-.info-card{background:var(--card);border-radius:12px;padding:25px;margin:20px 0;box-shadow:0 2px 15px rgba(0,0,0,.06);border-left:4px solid var(--secondary)}
-.info-card.warning{border-left-color:var(--accent)}
-.info-card.success{border-left-color:var(--green)}
-.info-card h4{margin-top:0;color:inherit}
+/* === FLIP ANIMATION === */
+.flip-overlay{position:absolute;top:0;width:50%;height:100%;z-index:10;
+  transform-style:preserve-3d;pointer-events:none}
+.flip-overlay.forward{right:0;left:auto;transform-origin:left center}
+.flip-overlay.backward{left:0;right:auto;transform-origin:right center}
+.flip-front,.flip-back{position:absolute;top:0;left:0;width:100%;height:100%;backface-visibility:hidden;overflow:hidden;display:flex;flex-direction:column}
+.flip-front{background:var(--page);z-index:2}
+.flip-back{background:var(--page);transform:rotateY(180deg)}
+.flip-front .flip-shadow{position:absolute;top:0;right:0;bottom:0;width:40%;
+  background:linear-gradient(to left,rgba(0,0,0,.12),transparent);pointer-events:none;z-index:4}
+.flip-back .flip-shadow{position:absolute;top:0;left:0;bottom:0;width:40%;
+  background:linear-gradient(to right,rgba(0,0,0,.12),transparent);pointer-events:none;z-index:4}
 
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:20px 0}
-.stat-card{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border-radius:12px;padding:20px;text-align:center}
-.stat-card .stat-value{font-size:2.2rem;font-weight:700;display:block}
-.stat-card .stat-label{font-size:.8rem;opacity:.85;margin-top:5px}
+/* Page shadow cast on book during flip */
+.book-shadow-overlay{position:absolute;top:0;bottom:0;width:30%;z-index:5;pointer-events:none;opacity:0;transition:opacity .1s}
+.book-shadow-overlay.left-shadow{left:0;background:linear-gradient(to right,rgba(0,0,0,.15),transparent)}
+.book-shadow-overlay.right-shadow{right:0;background:linear-gradient(to left,rgba(0,0,0,.15),transparent)}
 
-.scenario-box{background:#fff;border-radius:12px;padding:20px;margin:15px 0;box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid #e8e8e8;transition:transform .2s}
-.scenario-box:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.1)}
-.scenario-box .sc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.scenario-box .sc-num{background:var(--secondary);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
-.scenario-box .sc-title{font-weight:600;color:var(--primary);font-size:1rem}
+.pg-scroll{flex:1;overflow-y:auto;padding:32px 36px 20px;
+  scrollbar-width:thin;scrollbar-color:#ccc transparent}
+.pg-scroll::-webkit-scrollbar{width:4px}
+.pg-scroll::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+.pg-num{text-align:center;padding:8px;font-size:.72rem;color:#aaa;font-family:'Inter',sans-serif;border-top:1px solid #eee;flex-shrink:0}
 
-.quote-box{background:linear-gradient(135deg,#f8f4e8,#faf6ee);border-left:4px solid var(--coffee);padding:20px 25px;margin:15px 0;border-radius:0 12px 12px 0;font-style:italic;color:var(--coffee)}
-.quote-box .speaker{font-style:normal;font-weight:600;display:block;margin-top:8px;font-size:.85rem;color:var(--coffee-light)}
+/* === TYPOGRAPHY === */
+.ch-label{color:var(--secondary);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:3px;margin-bottom:3px;font-family:'Inter',sans-serif}
+.ch-title{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--primary);line-height:1.3;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--secondary)}
+h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--primary);margin:18px 0 8px}
+h4{font-size:.88rem;color:var(--secondary);margin:12px 0 6px;font-weight:700;font-family:'Inter',sans-serif}
+p{line-height:1.7;margin-bottom:10px;font-size:.84rem}
+strong{color:var(--dark)}
 
-.phase-card{background:#fff;border-radius:16px;padding:25px;margin:20px 0;box-shadow:0 3px 15px rgba(0,0,0,.06);position:relative;overflow:hidden}
-.phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
-.phase-card.p1::before{background:linear-gradient(90deg,#3498DB,#2ECC71)}
-.phase-card.p2::before{background:linear-gradient(90deg,#E67E22,#F1C40F)}
-.phase-card.p3::before{background:linear-gradient(90deg,#9B59B6,#3498DB)}
-.phase-card.p4::before{background:linear-gradient(90deg,#27AE60,#2ECC71)}
-.phase-card .phase-label{font-size:.8rem;color:var(--secondary);font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+/* === COMPONENTS === */
+.card{background:#f7f8fa;border-radius:8px;padding:14px 16px;margin:10px 0;border-left:3px solid var(--secondary)}
+.card.warn{border-left-color:var(--accent)}
+.card.ok{border-left-color:var(--green)}
+.card h4{margin-top:0}
 
-.smart-table{width:100%;border-collapse:collapse;margin:15px 0;border-radius:12px;overflow:hidden}
-.smart-table th{background:var(--primary);color:#fff;padding:12px 16px;text-align:left;font-weight:600;font-size:.85rem}
-.smart-table td{padding:12px 16px;border-bottom:1px solid #eee;font-size:.9rem}
-.smart-table tr:nth-child(even){background:#f8f9fa}
-.smart-table td:first-child{font-weight:600;color:var(--secondary);white-space:nowrap}
+.stat-row{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.stat-box{flex:1;min-width:80px;background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;border-radius:8px;padding:10px 6px;text-align:center}
+.stat-box.orange{background:linear-gradient(135deg,#E67E22,#F39C12)}
+.stat-box.red{background:linear-gradient(135deg,#C0392B,#E74C3C)}
+.stat-box.gray{background:linear-gradient(135deg,#7F8C8D,#95A5A6)}
+.stat-box.purple{background:linear-gradient(135deg,#8E44AD,#9B59B6)}
+.stat-box.dark{background:linear-gradient(135deg,#2C3E50,#34495E)}
+.stat-box .sv{font-size:1.3rem;font-weight:700;display:block;font-family:'Inter',sans-serif}
+.stat-box .sl{font-size:.62rem;opacity:.85;margin-top:2px;font-family:'Inter',sans-serif}
 
-.timeline{position:relative;padding-left:30px;margin:20px 0}
-.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--secondary),var(--green))}
-.timeline-item{position:relative;margin-bottom:25px;padding-left:25px}
-.timeline-item::before{content:'';position:absolute;left:-23px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--secondary);border:3px solid #fff;box-shadow:0 0 0 2px var(--secondary)}
-.timeline-item h4{margin-top:0}
+.scenario{background:#fff;border-radius:6px;padding:12px;margin:8px 0;box-shadow:0 1px 5px rgba(0,0,0,.04);border:1px solid #eee}
+.scenario .sc-head{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.scenario .sc-n{background:var(--secondary);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0;font-family:'Inter',sans-serif}
+.scenario .sc-t{font-weight:700;color:var(--primary);font-size:.84rem}
+.scenario p{font-size:.82rem;margin-bottom:6px}
 
-.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;margin:3px}
+.quote{background:linear-gradient(135deg,#f8f4e8,#faf6ee);border-left:3px solid var(--coffee);
+  padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-style:italic;color:var(--coffee);font-size:.82rem}
+.quote .spk{font-style:normal;font-weight:600;display:block;margin-top:4px;font-size:.74rem;color:var(--coffee-light)}
+
+.phase{background:#fff;border-radius:8px;padding:14px;margin:10px 0;box-shadow:0 1px 8px rgba(0,0,0,.04);position:relative;overflow:hidden}
+.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.phase.p1::before{background:linear-gradient(90deg,#3498DB,#2ECC71)}
+.phase.p2::before{background:linear-gradient(90deg,#E67E22,#F1C40F)}
+.phase.p3::before{background:linear-gradient(90deg,#9B59B6,#3498DB)}
+.phase.p4::before{background:linear-gradient(90deg,#27AE60,#2ECC71)}
+.phase .ph-label{font-size:.65rem;color:var(--secondary);font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:3px;font-family:'Inter',sans-serif}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.6rem;font-weight:600;margin:2px;font-family:'Inter',sans-serif}
 .tag.blue{background:rgba(46,117,182,.1);color:var(--secondary)}
 .tag.orange{background:rgba(230,126,34,.1);color:var(--accent)}
 .tag.green{background:rgba(39,174,96,.1);color:var(--green)}
 
-ul.styled{list-style:none;padding:0;margin:10px 0}
-ul.styled li{padding:8px 0 8px 28px;position:relative;font-size:.93rem;line-height:1.7}
-ul.styled li::before{content:'';position:absolute;left:8px;top:15px;width:8px;height:8px;border-radius:50%;background:var(--secondary)}
+.apa-tbl{width:100%;border-collapse:collapse;margin:8px 0;font-size:.78rem}
+.apa-tbl th{background:transparent;color:var(--text);padding:6px 8px;text-align:left;font-weight:700;border-top:2px solid #000;border-bottom:1px solid #000;font-family:'Inter',sans-serif;font-size:.74rem}
+.apa-tbl td{padding:6px 8px;border:none;font-size:.78rem}
+.apa-tbl tr:last-child td{border-bottom:2px solid #000}
+.apa-tbl td:first-child{font-weight:600}
+.tbl-label{font-weight:700;font-size:.78rem;margin-top:12px;margin-bottom:1px}
+.tbl-title{font-style:italic;font-size:.78rem;margin-bottom:5px;color:var(--text-light)}
 
-.video-placeholder{background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:12px;padding:40px;text-align:center;color:#fff;margin:20px 0;cursor:pointer;transition:transform .2s}
-.video-placeholder:hover{transform:scale(1.01)}
-.video-placeholder .play-icon{font-size:3rem;margin-bottom:10px}
-.video-placeholder a{color:var(--coffee-light);text-decoration:none;font-weight:500}
-.video-placeholder a:hover{text-decoration:underline}
+ul.bul{list-style:none;padding:0;margin:6px 0}
+ul.bul li{padding:4px 0 4px 20px;position:relative;font-size:.82rem;line-height:1.6}
+ul.bul li::before{content:'';position:absolute;left:5px;top:10px;width:6px;height:6px;border-radius:50%;background:var(--secondary)}
+
+.timeline{position:relative;padding-left:22px;margin:12px 0}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--secondary),var(--green))}
+.tl-item{position:relative;margin-bottom:14px;padding-left:18px}
+.tl-item::before{content:'';position:absolute;left:-17px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--secondary);border:2px solid #fff;box-shadow:0 0 0 2px var(--secondary)}
+.tl-item h4{margin-top:0;font-size:.84rem}
+.tl-item p{font-size:.8rem;margin-bottom:4px}
 
 .ref-list{list-style:none;padding:0}
-.ref-list li{padding:10px 0;border-bottom:1px solid #eee;font-size:.88rem;line-height:1.6;padding-left:30px;text-indent:-30px}
+.ref-list li{padding:5px 0;border-bottom:1px solid #eee;font-size:.74rem;line-height:1.5;padding-left:22px;text-indent:-22px}
+.ref-list li a{color:var(--secondary);word-break:break-all}
 
-/* FOOTER NAV */
-.page-footer{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:20px;border-top:1px solid #eee}
-.footer-btn{background:var(--secondary);color:#fff;border:none;padding:10px 24px;border-radius:25px;cursor:pointer;font-size:.9rem;transition:all .3s;font-family:'Inter',sans-serif}
-.footer-btn:hover{background:var(--primary);transform:scale(1.05)}
-.footer-btn.outline{background:transparent;color:var(--secondary);border:2px solid var(--secondary)}
-.footer-btn.outline:hover{background:var(--secondary);color:#fff}
+.resource-link{display:block;background:#f0f7ff;border-radius:5px;padding:8px 12px;margin:6px 0;font-size:.78rem;text-decoration:none;color:var(--secondary);border:1px solid #d0e4f5;transition:background .2s}
+.resource-link:hover{background:#dceefb}
 
-/* INTERACTIVE TABS */
-.tabs{display:flex;gap:8px;margin:20px 0 15px;flex-wrap:wrap}
-.tab-btn{padding:8px 18px;border:2px solid var(--secondary);background:transparent;color:var(--secondary);border-radius:25px;cursor:pointer;font-size:.85rem;transition:all .3s;font-family:'Inter',sans-serif}
-.tab-btn.active,.tab-btn:hover{background:var(--secondary);color:#fff}
-.tab-content{display:none;animation:fadeIn .3s}
-.tab-content.active{display:block}
+.toc-list{list-style:none;padding:0;margin:12px 0}
+.toc-list li{padding:10px 12px;border-bottom:1px solid #eee;font-size:.86rem;cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:9px;font-family:'Inter',sans-serif}
+.toc-list li:hover{background:#f0f4f8}
+.toc-list .toc-num{background:var(--secondary);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72rem;flex-shrink:0}
+.toc-list .toc-pg{margin-left:auto;color:#999;font-size:.75rem}
 
-/* PROGRESS BAR */
-.progress-bar{position:fixed;bottom:0;left:0;right:0;height:4px;background:#eee;z-index:100}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--secondary),var(--green));transition:width .3s}
+/* === NAV BAR === */
+.nav-bar{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;font-family:'Inter',sans-serif}
+.nav-arrow{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;width:42px;height:42px;border-radius:50%;
+  cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.nav-arrow:hover{background:rgba(255,255,255,.25);transform:scale(1.08)}
+.nav-arrow:disabled{opacity:.3;cursor:default;transform:none}
+.pg-info{color:rgba(255,255,255,.65);font-size:.82rem;min-width:100px;text-align:center}
+.toc-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 16px;
+  border-radius:25px;cursor:pointer;font-size:.78rem;transition:all .3s;font-family:'Inter',sans-serif}
+.toc-btn:hover{background:rgba(255,255,255,.25)}
 
-@media(max-width:768px){
-  .cover h1{font-size:1.8rem}
-  .stat-grid{grid-template-columns:1fr 1fr}
-  .page{padding:20px}
-  .nav-title{display:none}
-}
+/* TOC PANEL */
+.toc-panel{display:none;position:absolute;bottom:66px;left:50%;transform:translateX(-50%);
+  background:#fff;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.3);padding:18px;width:320px;max-height:55vh;overflow-y:auto;z-index:50}
+.toc-panel.open{display:block}
+.toc-panel h3{font-size:.95rem;margin-bottom:8px;color:var(--primary)}
+.toc-panel .ti{padding:7px 10px;cursor:pointer;border-radius:5px;font-size:.82rem;color:var(--text);transition:background .2s;font-family:'Inter',sans-serif}
+.toc-panel .ti:hover{background:#f0f4f8}
+.toc-panel .ti.active{background:rgba(46,117,182,.1);color:var(--primary);font-weight:600}
+.toc-panel .tc{color:var(--secondary);font-weight:700;margin-right:5px}
 
+/* === TRANSITIONS === */
+.cover-view{transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s}
+.cover-view.opening{transform:perspective(1200px) rotateY(-85deg) scale(.95);opacity:0;pointer-events:none}
+.spread-view{opacity:0;transition:opacity .4s ease .2s}
+.spread-view.active{opacity:1}
+.back-cover-enter{animation:backIn .6s ease forwards}
+@keyframes backIn{from{transform:perspective(1200px) rotateY(85deg);opacity:0}to{transform:none;opacity:1}}
 
-.start-btn{
-  background:linear-gradient(135deg,#E67E22,#F39C12);
-  color:#fff;border:none;padding:14px 44px;border-radius:50px;
-  font-size:1.05rem;font-weight:700;font-family:'Inter',sans-serif;
-  cursor:pointer;transition:all .3s;
-  box-shadow:0 4px 20px rgba(230,126,34,.4);
-  letter-spacing:1px;animation:pulse 2s infinite;
-  margin-top:20px;position:relative;z-index:1;
-}
-.start-btn:hover{transform:scale(1.08);box-shadow:0 6px 30px rgba(230,126,34,.6)}
-@keyframes pulse {
-  0% { box-shadow: 0 4px 20px rgba(230,126,34,0.4); }
-  50% { box-shadow: 0 4px 30px rgba(230,126,34,0.7); }
-  100% { box-shadow: 0 4px 20px rgba(230,126,34,0.4); }
+@media(max-width:800px){
+  .pg-scroll{padding:18px 16px 14px}
+  .cover-inner h1{font-size:1.3rem}
+  .cover-inner{padding:24px 16px}
+  .ch-title{font-size:1.2rem}
+  .stat-row{flex-wrap:wrap}
+  .stat-box{min-width:60px}
 }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <button class="nav-btn" onclick="toggleSidebar()" id="menuBtn">&#9776; Contenido</button>
-  <span class="nav-title">Plan de Coaching Gerencial – Cafesur S.A.S.</span>
-  <div class="nav-controls">
-    <button class="nav-btn" onclick="goTo(0)" id="homeBtn" title="Ir al inicio" style="display:none;">&#8962;</button>
-    <button class="nav-btn" onclick="prevPage()">&#8592;</button>
-    <span class="page-indicator" id="pageIndicator">1 / 8</span>
-    <button class="nav-btn" onclick="nextPage()">&#8594;</button>
+<!-- ============ COVER ============ -->
+<div class="book-wrap" id="bookWrap">
+  <div class="cover-view" id="coverView" onclick="openBook()">
+    <div class="cover-inner">
+      <div class="icon">&#9749;</div>
+      <h1>Plan de Coaching Gerencial para la Transformación y el Cambio</h1>
+      <p class="subtitle">E-book Interactivo</p>
+      <p class="case">Caso de Estudio: Cafesur S.A.S. — Entre el Crecimiento y el Estancamiento</p>
+      <div class="author-block">
+        <p class="author-name">Mayerli Delgadillo Prada</p>
+        <p class="author-info">Universidad Nacional Abierta y a Distancia (UNAD)<br>Especialización en Dirección y Desarrollo del Talento Humano<br>Coaching Gerencial &bull; 2026</p>
+      </div>
+      <div class="cover-hint">&#9654; Clic para abrir el libro</div>
+    </div>
   </div>
-</nav>
 
-<div class="sidebar" id="sidebar">
-  <div class="toc-item active" onclick="goTo(0)"><span class="ch-num">01</span> Portada</div>
-  <div class="toc-item" onclick="goTo(1)"><span class="ch-num">02</span> Introducción al Caso</div>
-  <div class="toc-item" onclick="goTo(2)"><span class="ch-num">03</span> Diagnóstico del Caso</div>
-  <div class="toc-item" onclick="goTo(3)"><span class="ch-num">04</span> Plan de Coaching Estratégico</div>
-  <div class="toc-item" onclick="goTo(4)"><span class="ch-num">05</span> Elementos Metodológicos</div>
-  <div class="toc-item" onclick="goTo(5)"><span class="ch-num">06</span> Resultados y Evaluación</div>
-  <div class="toc-item" onclick="goTo(6)"><span class="ch-num">07</span> Conclusiones y Reflexiones</div>
-  <div class="toc-item" onclick="goTo(7)"><span class="ch-num">08</span> Referencias</div>
-</div>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-<div class="main">
-
-<!-- PAGE 0: COVER -->
-<div class="page active" id="page0">
-  <div class="cover">
-    <div class="cover-icon">&#9749;</div>
-    <h1>Plan de Coaching Gerencial para la Transformación y el Cambio</h1>
-    <p class="subtitle">E-book Interactivo</p>
-    <p class="case">Caso de Estudio: Cafesur S.A.S. – Entre el Crecimiento y el Estancamiento</p>
-    <div class="author">
-      <p class="author-name">Mayerli Delgadillo Prada</p>
-      <p class="author-info">Coaching Gerencial &bull; 2026</p>
+  <!-- ============ BACK COVER ============ -->
+  <div class="cover-view back" id="backCover" style="display:none" onclick="goToSpread(totalSpreads-1)">
+    <div class="back-inner">
+      <div style="font-size:3rem;margin-bottom:18px">&#9749;</div>
+      <p style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:8px;font-weight:700">Plan de Coaching Gerencial</p>
+      <p style="font-size:.88rem;color:rgba(255,255,255,.65);margin-bottom:18px">Cafesur S.A.S. — Transformación y Cambio</p>
+      <div style="border-top:1px solid rgba(255,255,255,.2);padding-top:16px">
+        <p style="font-size:.88rem;color:#F39C12;font-weight:600">Mayerli Delgadillo Prada</p>
+        <p style="font-size:.75rem;color:rgba(255,255,255,.45);margin-top:5px">UNAD &bull; Coaching Gerencial &bull; 2026</p>
+      </div>
+      <div class="cover-hint">&#9654; Clic para volver</div>
     </div>
-    <button class="start-btn" onclick="nextPage()">&#9654; INICIAR LECTURA</button>
   </div>
-</div>
 
-<!-- PAGE 1: INTRODUCCIÓN -->
-<div class="page" id="page1">
-  <div class="content-wrapper">
-    <div class="chapter-header">
-      <div class="ch-number">Capítulo 1</div>
-      <h2>Introducción al Caso Organizacional</h2>
-    </div>
-    <p>Cafesur S.A.S. es una empresa colombiana ubicada en <strong>Pitalito, Huila</strong>, dedicada a la compra, transformación y comercialización de café especial. Fundada en 2005 como una pequeña cooperativa local, ha logrado un crecimiento sostenido que la llevó a contar con <strong>145 colaboradores</strong> distribuidos en tres sedes. Este caso ilustra lo que Guadarrama Varón et al. (2023) describen como la tensión entre el crecimiento organizacional y la capacidad de gestión del factor humano en procesos de cambio.</p>
-    
-    <div class="info-card">
-      <h4>&#127981; Estructura Organizacional</h4>
-      <ul class="styled">
-        <li>Gerencia General</li>
-        <li>Dirección de Operaciones</li>
-        <li>Dirección Comercial</li>
-        <li>Dirección de Innovación y Calidad</li>
-        <li>Dirección de Talento Humano</li>
-        <li>Áreas de soporte: logística, finanzas, compras</li>
-      </ul>
-    </div>
-
-    <h3>El Desafío</h3>
-    <p>Entre 2022 y 2024, Cafesur inició un ambicioso proyecto de <strong>transformación digital y reorganización interna</strong>, motivado por exigencias de clientes internacionales y la búsqueda de trazabilidad avanzada. Sin embargo, en lugar del incremento del 20% en productividad esperado, se manifestaron resultados adversos:</p>
-    
-    <div class="stat-grid">
-      <div class="stat-card">
-        <span class="stat-value">&#8593;</span>
-        <span class="stat-label">Alta rotación de personal</span>
-      </div>
-      <div class="stat-card" style="background:linear-gradient(135deg,#E67E22,#F39C12)">
-        <span class="stat-value">&#9888;</span>
-        <span class="stat-label">Conflictos internos</span>
-      </div>
-      <div class="stat-card" style="background:linear-gradient(135deg,#C0392B,#E74C3C)">
-        <span class="stat-value">&#8987;</span>
-        <span class="stat-label">Retrasos operativos</span>
-      </div>
-      <div class="stat-card" style="background:linear-gradient(135deg,#7F8C8D,#95A5A6)">
-        <span class="stat-value">&#9729;</span>
-        <span class="stat-label">Clima laboral tenso</span>
-      </div>
-    </div>
-
-    <div class="info-card warning">
-      <h4>&#9888; Problemáticas Centrales Identificadas</h4>
-      <p><strong>A. Resistencia al cambio:</strong> Los colaboradores consideran innecesarios los nuevos sistemas digitales. Los mandos medios sienten pérdida de control. Rumores de despidos generan miedo e inacción.</p>
-      <p><strong>B. Mala comunicación interna:</strong> Mensajes poco claros ni oportunos, supervisores que no transmiten información adecuadamente, confusión sobre roles y equipos que trabajan en "silos".</p>
-    </div>
-
-    <div style="margin:20px 0;border-radius:12px;overflow:hidden;background:#0d2d40;">
-      <video controls style="width:100%;display:block;border-radius:12px;" preload="metadata">
-        <source src="cambio-organizacional.mp4" type="video/mp4">
-      </video>
-      <p style="text-align:center;color:#81C3D7;font-size:0.85rem;padding:10px 0 14px;margin:0;">Gestión del Cambio Organizacional – Cómo liderar la transformación (Español)</p>
-    </div>
-
-    <div class="page-footer">
-      <button class="footer-btn outline" onclick="prevPage()">&#8592; Anterior</button>
-      <button class="footer-btn" onclick="nextPage()">Siguiente &#8594;</button>
+  <!-- ============ SPREAD VIEW ============ -->
+  <div class="spread-view" id="spreadView">
+    <div class="spread-book">
+      <div class="page-left" id="pageLeft"></div>
+      <div class="page-right" id="pageRight"></div>
     </div>
   </div>
 </div>
 
-<!-- PAGE 2: DIAGNÓSTICO -->
-<div class="page" id="page2">
-  <div class="content-wrapper">
-    <div class="chapter-header">
-      <div class="ch-number">Capítulo 2</div>
-      <h2>Contexto y Diagnóstico del Caso</h2>
-    </div>
-
-    <h3>Escenarios Críticos</h3>
-    <div class="scenario-box">
-      <div class="sc-header"><div class="sc-num">1</div><div class="sc-title">Comunicación deficiente del cambio</div></div>
-      <p>La Gerencia de Operaciones convocó una reunión sobre el nuevo sistema de trazabilidad digital con apenas horas de anticipación, sin aclarar objetivos ni abrir espacio para preguntas. Según Kotter (2012), la falta de comunicación clara sobre la visión del cambio es una de las principales causas del fracaso en procesos de transformación.</p>
-      <div class="quote-box">"Nosotros llevamos 15 años haciendo esto igual y funciona. ¿Para qué cambiar lo que está bien?"<span class="speaker">— Roberto, Supervisor de Tueste</span></div>
-      <div class="quote-box">"Si esto falla, ¿a quién le van a echar la culpa? No quiero más responsabilidades sin capacitación."<span class="speaker">— Marta, Coordinadora de Calidad</span></div>
-    </div>
-
-    <div class="scenario-box">
-      <div class="sc-header"><div class="sc-num">2</div><div class="sc-title">Brecha generacional</div></div>
-      <p>Dos bandos en la planta: <strong>los antiguos</strong> (10+ años, procesos manuales) vs. <strong>los nuevos</strong> (jóvenes, tecnología). Desconfianza mutua que genera errores, reprocesos y retrasos. Bakke y Johansen (2024) demuestran que los equipos de alto rendimiento se construyen integrando perspectivas diversas, no dividiendo por generaciones.</p>
-    </div>
-
-    <div class="scenario-box">
-      <div class="sc-header"><div class="sc-num">3</div><div class="sc-title">Liderazgo directivo inadecuado</div></div>
-      <p>Daniela (Directora de Operaciones): instrucciones incompletas, decisiones unilaterales, exigencia de resultados sin acompañamiento. Resultado: desgaste emocional y baja motivación. Este estilo contradice los principios del Liderazgo Situacional de Hersey y Blanchard (2013), que propone adaptar el estilo directivo al nivel de madurez de los colaboradores.</p>
-    </div>
-
-    <div class="scenario-box">
-      <div class="sc-header"><div class="sc-num">4</div><div class="sc-title">Rumores e incertidumbre</div></div>
-      <p>Rumores de "despidos masivos" sin confirmación oficial. Consecuencias: ausentismo, sabotaje pasivo, menor participación.</p>
-    </div>
-
-    <div class="scenario-box">
-      <div class="sc-header"><div class="sc-num">5</div><div class="sc-title">Implementación fallida del piloto digital</div></div>
-      <p>Piloto de registro digital: solo 2 horas de entrenamiento, sin acompañamiento, sin embajador del cambio. Resultado: mal uso del sistema y retorno al papel.</p>
-    </div>
-
-    <h3>Evidencias del Diagnóstico Interno</h3>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('resistance')">Resistencia al Cambio</button>
-      <button class="tab-btn" onclick="showTab('communication')">Comunicación</button>
-    </div>
-    <div class="tab-content active" id="tab-resistance">
-      <div class="stat-grid">
-        <div class="stat-card" style="background:linear-gradient(135deg,#C0392B,#E74C3C)"><span class="stat-value">63%</span><span class="stat-label">Prefiere procesos manuales</span></div>
-        <div class="stat-card" style="background:linear-gradient(135deg,#E67E22,#F39C12)"><span class="stat-value">48%</span><span class="stat-label">Cree que habrá despidos</span></div>
-        <div class="stat-card" style="background:linear-gradient(135deg,#7F8C8D,#95A5A6)"><span class="stat-value">52%</span><span class="stat-label">Siente que no lo escuchan</span></div>
-      </div>
-    </div>
-    <div class="tab-content" id="tab-communication">
-      <div class="stat-grid">
-        <div class="stat-card" style="background:linear-gradient(135deg,#8E44AD,#9B59B6)"><span class="stat-value">70%</span><span class="stat-label">Comunicación entre áreas deficiente</span></div>
-        <div class="stat-card" style="background:linear-gradient(135deg,#2C3E50,#34495E)"><span class="stat-value">58%</span><span class="stat-label">Instrucciones contradictorias</span></div>
-        <div class="stat-card" style="background:linear-gradient(135deg,#C0392B,#E74C3C)"><span class="stat-value">41%</span><span class="stat-label">Inseguridad para preguntar</span></div>
-      </div>
-    </div>
-
-    <div class="info-card">
-      <p>Estos datos evidencian lo que Senge (2006) describe como una organización que no ha desarrollado la capacidad de aprender colectivamente. La ausencia de seguridad psicológica impide el diálogo abierto y el aprendizaje organizacional necesarios para la transformación.</p>
-    </div>
-
-    <div class="page-footer">
-      <button class="footer-btn outline" onclick="prevPage()">&#8592; Anterior</button>
-      <button class="footer-btn" onclick="nextPage()">Siguiente &#8594;</button>
-    </div>
-  </div>
+<!-- TOC PANEL -->
+<div class="toc-panel" id="tocPanel">
+  <h3>&#128214; Tabla de Contenido</h3>
+  <div class="ti" data-spread="0" onclick="goToSpread(0)"><span class="tc">00</span> Portada</div>
+  <div class="ti" data-spread="1" onclick="goToSpread(1)"><span class="tc">01</span> Contenido e Introducción</div>
+  <div class="ti" data-spread="3" onclick="goToSpread(3)"><span class="tc">02</span> Diagnóstico del Caso</div>
+  <div class="ti" data-spread="5" onclick="goToSpread(5)"><span class="tc">03</span> Fortalezas y Debilidades</div>
+  <div class="ti" data-spread="6" onclick="goToSpread(6)"><span class="tc">04</span> Plan de Coaching Estratégico</div>
+  <div class="ti" data-spread="8" onclick="goToSpread(8)"><span class="tc">05</span> Elementos Metodológicos</div>
+  <div class="ti" data-spread="10" onclick="goToSpread(10)"><span class="tc">06</span> Resultados y Evaluación</div>
+  <div class="ti" data-spread="12" onclick="goToSpread(12)"><span class="tc">07</span> Conclusiones</div>
+  <div class="ti" data-spread="13" onclick="goToSpread(13)"><span class="tc">08</span> Referencias</div>
 </div>
 
-<!-- PAGE 3: PLAN DE COACHING -->
-<div class="page" id="page3">
-  <div class="content-wrapper">
-    <div class="chapter-header">
-      <div class="ch-number">Capítulo 3</div>
-      <h2>Plan de Coaching Estratégico</h2>
-    </div>
-
-    <div class="info-card success">
-      <h4>&#127919; Objetivo General (SMART)</h4>
-      <p>Reducir en un <strong>40%</strong> los indicadores de resistencia al cambio y mejorar en un <strong>50%</strong> la percepción de comunicación interna efectiva entre los mandos medios y equipos operativos de Cafesur S.A.S., mediante un programa de coaching gerencial integral de <strong>16 semanas</strong>, medido a través de encuestas de clima organizacional.</p>
-    </div>
-
-    <table class="smart-table">
-      <tr><th>Criterio</th><th>Descripción</th></tr>
-      <tr><td>Specific</td><td>Reducir resistencia al cambio y mejorar comunicación interna en mandos medios y equipos</td></tr>
-      <tr><td>Measurable</td><td>Reducción del 40% en resistencia; mejora del 50% en comunicación efectiva</td></tr>
-      <tr><td>Achievable</td><td>Basado en benchmarks de intervenciones de coaching organizacional (Rosinski, 2003; Grant, 2014)</td></tr>
-      <tr><td>Relevant</td><td>Alineado con la transformación digital y mejora de productividad</td></tr>
-      <tr><td>Time-bound</td><td>16 semanas con evaluaciones en semanas 8 y 16</td></tr>
-    </table>
-
-    <h3>Objetivos Específicos</h3>
-    <ul class="styled">
-      <li>Incrementar en un 60% las competencias de liderazgo transformacional en los 6 mandos medios de Cafesur S.A.S., medido a través de evaluación 360° pre y post intervención, durante las semanas 4 a 12 del programa.</li>
-      <li>Diseñar e implementar al menos 3 protocolos formales de comunicación interna (descendente, ascendente y horizontal) en las 3 sedes de la empresa, antes de la semana 10 del programa, reduciendo las instrucciones contradictorias del 58% al 25%.</li>
-      <li>Reducir en un 50% los conflictos intergeneracionales entre colaboradores antiguos y nuevos, mediante 4 sesiones de coaching de equipos durante las semanas 5 a 8, medido por la disminución de errores por reprocesos y encuesta de clima.</li>
-      <li>Desarrollar habilidades de gestión emocional del cambio en el 100% de los líderes de área (6 personas), logrando que al menos el 80% demuestre competencias de escucha activa y retroalimentación constructiva al finalizar la semana 12, según evaluación 360°.</li>
-      <li>Conformar y capacitar una red de 8 a 10 embajadores del cambio provenientes de diferentes áreas y generaciones, antes de la semana 4, que facilite la adopción del sistema digital elevando su uso correcto del 25% al 75% para la semana 16.</li>
-      <li>Evaluar el impacto del programa mediante 3 mediciones cuantitativas (semanas 0, 8 y 16) y 2 grupos focales cualitativos (semanas 8 y 16), respetando los principios éticos del coaching profesional (ICF Panamá, 2021; FasterCapital, 2024), generando un informe final de resultados en la semana 16.</li>
-    </ul>
-
-    <h3>Fases del Plan</h3>
-    <div class="phase-card p1">
-      <div class="phase-label">Fase 1 &bull; Semanas 1-3</div>
-      <h4>Sensibilización y Alineación</h4>
-      <p>Talleres de sensibilización, sesiones individuales de encuadre, comunicado oficial transparente y conformación de embajadores del cambio.</p>
-      <span class="tag blue">Diagnóstico</span><span class="tag green">Confianza</span><span class="tag orange">Comunicación</span>
-    </div>
-
-    <div class="phase-card p2">
-      <div class="phase-label">Fase 2 &bull; Semanas 4-8</div>
-      <h4>Desarrollo de Competencias de Liderazgo</h4>
-      <p>Sesiones individuales con modelo GROW, talleres de equipos "Puentes Generacionales" y "Comunicación que Transforma". Se aplican las herramientas prácticas del coaching organizacional descritas por Zeus y Skiffington (2002).</p>
-      <span class="tag blue">Modelo GROW</span><span class="tag orange">Coaching Ontológico</span><span class="tag green">Team Coaching</span>
-    </div>
-
-    <div class="phase-card p3">
-      <div class="phase-label">Fase 3 &bull; Semanas 9-13</div>
-      <h4>Acompañamiento en la Implementación</h4>
-      <p>Coaching en la acción, protocolos de comunicación, coaching especializado con Daniela aplicando el modelo de Liderazgo Situacional (Hersey y Blanchard, 2013), y espacios de diálogo abierto.</p>
-      <span class="tag blue">Liderazgo Situacional</span><span class="tag orange">Protocolos</span><span class="tag green">Diálogo</span>
-    </div>
-
-    <div class="phase-card p4">
-      <div class="phase-label">Fase 4 &bull; Semanas 14-16</div>
-      <h4>Consolidación y Sostenibilidad</h4>
-      <p>Sesiones de cierre, taller "Cafesur Transformado", informe de resultados y plan de seguimiento post-coaching.</p>
-      <span class="tag blue">Evaluación</span><span class="tag green">Sostenibilidad</span><span class="tag orange">Cierre</span>
-    </div>
-
-    <div class="page-footer">
-      <button class="footer-btn outline" onclick="prevPage()">&#8592; Anterior</button>
-      <button class="footer-btn" onclick="nextPage()">Siguiente &#8594;</button>
-    </div>
-  </div>
+<!-- NAV BAR -->
+<div class="nav-bar" id="navBar">
+  <button class="toc-btn" onclick="toggleToc()">&#9776; Contenido</button>
+  <button class="nav-arrow" id="prevBtn" onclick="prev()">&#8592;</button>
+  <span class="pg-info" id="pgInfo">Portada</span>
+  <button class="nav-arrow" id="nextBtn" onclick="next()">&#8594;</button>
 </div>
-
-<!-- PAGE 4: ELEMENTOS METODOLÓGICOS -->
-<div class="page" id="page4">
-  <div class="content-wrapper">
-    <div class="chapter-header">
-      <div class="ch-number">Capítulo 4</div>
-      <h2>Elementos Metodológicos</h2>
-    </div>
-
-    <h3>Técnicas y Modelos de Coaching Aplicados</h3>
-
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('ontologico')">Ontológico</button>
-      <button class="tab-btn" onclick="showTab('equipos')">De Equipos</button>
-      <button class="tab-btn" onclick="showTab('grow')">GROW</button>
-      <button class="tab-btn" onclick="showTab('adkar')">ADKAR</button>
-    </div>
-
-    <div class="tab-content active" id="tab-ontologico">
-      <div class="info-card">
-        <h4>&#128161; Coaching Ontológico</h4>
-        <p><strong>Autores:</strong> Rafael Echeverría, Julio Olalla</p>
-        <p>Trabaja desde tres dominios: <strong>lenguaje</strong>, <strong>emocionalidad</strong> y <strong>corporalidad</strong>. Se aplica porque las problemáticas de Cafesur tienen raíces en las interpretaciones (juicios sobre el cambio), las emociones (miedo, desconfianza) y las disposiciones corporales de los colaboradores.</p>
-        <p><strong>Aplicación en Cafesur:</strong> Sesiones para explorar las creencias limitantes de líderes como Roberto ("lo que funciona no se cambia") y transformar juicios en posibilidades de acción.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-equipos">
-      <div class="info-card">
-        <h4>&#129309; Coaching de Equipos (Team Coaching)</h4>
-        <p><strong>Autor:</strong> Peter Hawkins (2017)</p>
-        <p>Orientado a mejorar el rendimiento colectivo trabajando sobre dinámicas relacionales, comunicación y alineación de propósitos. Bakke y Johansen (2024) confirman que los equipos de alto rendimiento se desarrollan a través de procesos deliberados de construcción de confianza y comunicación.</p>
-        <p><strong>Aplicación en Cafesur:</strong> Talleres "Puentes Generacionales" con técnica World Café para integrar colaboradores antiguos y nuevos, derribando estereotipos y construyendo acuerdos de colaboración.</p>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-grow">
-      <div class="info-card">
-        <h4>&#127793; Modelo GROW (Whitmore, 2009)</h4>
-        <table class="smart-table">
-          <tr><th>Fase</th><th>Significado</th><th>Aplicación</th></tr>
-          <tr><td>Goal</td><td>Meta</td><td>Definición de objetivos de liderazgo alineados con la transformación</td></tr>
-          <tr><td>Reality</td><td>Realidad</td><td>Exploración de fortalezas, creencias limitantes y emociones</td></tr>
-          <tr><td>Options</td><td>Opciones</td><td>Nuevas prácticas de comunicación y gestión de resistencia</td></tr>
-          <tr><td>Will</td><td>Voluntad</td><td>Plan de acción personal con compromisos y plazos</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-adkar">
-      <div class="info-card">
-        <h4>&#128736; Modelo ADKAR (Prosci / Hiatt, 2006)</h4>
-        <p>Marco para gestión del cambio individual que permite diagnosticar en qué etapa está cada colaborador:</p>
-        <ul class="styled">
-          <li><strong>Awareness:</strong> Conciencia de la necesidad de cambio</li>
-          <li><strong>Desire:</strong> Deseo de participar y apoyar el cambio</li>
-          <li><strong>Knowledge:</strong> Conocimiento de cómo cambiar</li>
-          <li><strong>Ability:</strong> Capacidad de implementar el cambio</li>
-          <li><strong>Reinforcement:</strong> Refuerzo para sostener el cambio</li>
-        </ul>
-        <p><strong>Diagnóstico Cafesur:</strong> La mayoría de empleados están estancados entre Awareness y Desire, lo que explica la resistencia generalizada.</p>
-      </div>
-    </div>
-
-    <h3>Cronograma de Sesiones</h3>
-    <table class="smart-table">
-      <tr><th>Semanas</th><th>Fase</th><th>Actividades Principales</th></tr>
-      <tr><td>1 - 3</td><td>Sensibilización</td><td>Talleres, entrevistas de encuadre, comunicados, embajadores</td></tr>
-      <tr><td>4 - 8</td><td>Desarrollo</td><td>Sesiones GROW individuales, talleres de equipos</td></tr>
-      <tr><td>9 - 13</td><td>Implementación</td><td>Coaching en acción, protocolos, diálogo abierto</td></tr>
-      <tr><td>14 - 16</td><td>Consolidación</td><td>Cierre, informe de resultados, plan de seguimiento</td></tr>
-    </table>
-
-    <div class="video-placeholder">
-      <div class="play-icon">&#9654;</div>
-      <p>Recurso multimedia recomendado:</p>
-      <a href="https://www.youtube.com/watch?v=UY75MQte4RU" target="_blank">El Modelo GROW explicado – Coaching efectivo</a>
-    </div>
-
-    <div class="info-card">
-      <h4>&#128220; Fundamento Ético y Evidencia Científica</h4>
-      <p>Todo el proceso de coaching se rige por los principios éticos establecidos por la International Coaching Federation (ICF, 2021), incluyendo la confidencialidad, el respeto a la autonomía del coachee y la responsabilidad profesional (ICF Panamá, 2021; FasterCapital, 2024). La evidencia científica respalda la eficacia del coaching: Theeboom et al. (2014) demostraron en su meta-análisis que el coaching produce efectos positivos significativos en desempeño, bienestar y autorregulación. Asimismo, Grant (2014) confirmó la eficacia del coaching ejecutivo específicamente en contextos de cambio organizacional.</p>
-    </div>
-
-    <div class="page-footer">
-      <button class="footer-btn outline" onclick="prevPage()">&#8592; Anterior</button>
-      <button class="footer-btn" onclick="nextPage()">Siguiente &#8594;</button>
-    </div>
-  </div>
-</div>
-
-<!-- PAGE 5: RESULTADOS Y EVALUACIÓN -->
-<div class="page" id="page5">
-  <div class="content-wrapper">
-    <div class="chapter-header">
-      <div class="ch-number">Capítulo 5</div>
-      <h2>Resultados Esperados y Plan de Evaluación</h2>
-    </div>
-
-    <h3>Indicadores de Impacto</h3>
-    <table class="smart-table">
-      <tr><th>Indicador</th><th>Línea Base</th><th>Meta</th></tr>
-      <tr><td>Preferencia procesos manuales</td><td>63%</td><td>35%</td></tr>
-      <tr><td>Comunicación deficiente</td><td>70%</td><td>30%</td></tr>
-      <tr><td>Temor a despidos</td><td>48%</td><td>15%</td></tr>
-      <tr><td>Seguridad psicológica</td><td>59%</td><td>80%</td></tr>
-      <tr><td>Instrucciones contradictorias</td><td>58%</td><td>20%</td></tr>
-      <tr><td>Adopción tecnológica</td><td>25%</td><td>75%</td></tr>
-    </table>
-
-    <h3>Instrumentos de Medición</h3>
-    <div class="info-card">
-      <ul class="styled">
-        <li><strong>Encuesta de clima organizacional:</strong> Semanas 0, 8 y 16. Los estudios de Rosinski (2003) y Grant (2014) validan el uso de mediciones pre y post intervención para evaluar el impacto del coaching.</li>
-        <li><strong>Evaluación 360° de líderes:</strong> Antes y después de la intervención</li>
-        <li><strong>Registro de sesiones:</strong> Documentación de avances y compromisos</li>
-        <li><strong>Indicadores operativos:</strong> Productividad, rotación, ausentismo</li>
-        <li><strong>Grupos focales:</strong> Percepciones cualitativas de colaboradores</li>
-      </ul>
-    </div>
-
-    <h3>Momentos de Evaluación</h3>
-    <div class="timeline">
-      <div class="timeline-item">
-        <h4>Semana 0 – Línea Base</h4>
-        <p>Aplicación de todos los instrumentos para establecer el punto de partida.</p>
-      </div>
-      <div class="timeline-item">
-        <h4>Semana 8 – Evaluación Intermedia</h4>
-        <p>Revisión de avances parciales. Ajuste de estrategias si es necesario.</p>
-      </div>
-      <div class="timeline-item">
-        <h4>Semana 16 – Evaluación Final</h4>
-        <p>Medición de impacto total. Comparación con línea base.</p>
-      </div>
-      <div class="timeline-item">
-        <h4>Mes 3 Post-intervención – Seguimiento</h4>
-        <p>Verificación de sostenibilidad de los cambios logrados.</p>
-      </div>
-    </div>
-
-    <h3>Resultados Esperados</h3>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('individual')">Individual</button>
-      <button class="tab-btn" onclick="showTab('grupal')">Grupal</button>
-      <button class="tab-btn" onclick="showTab('organizacional')">Organizacional</button>
-    </div>
-    <div class="tab-content active" id="tab-individual">
-      <div class="info-card success">
-        <ul class="styled">
-          <li>Transformación del estilo de liderazgo de directivo a participativo</li>
-          <li>Competencias de comunicación asertiva y escucha activa</li>
-          <li>Mayor autoconciencia sobre creencias limitantes</li>
-          <li>Capacidad de gestión emocional ante el cambio</li>
-        </ul>
-      </div>
-    </div>
-    <div class="tab-content" id="tab-grupal">
-      <div class="info-card success">
-        <ul class="styled">
-          <li>Reducción de la brecha generacional</li>
-          <li>Mejora en dinámicas de trabajo en equipo</li>
-          <li>Red de embajadores del cambio operativa</li>
-        </ul>
-      </div>
-    </div>
-    <div class="tab-content" id="tab-organizacional">
-      <div class="info-card success">
-        <ul class="styled">
-          <li>Protocolos de comunicación bidireccionales implementados</li>
-          <li>Reducción de rumores y clima de incertidumbre</li>
-          <li>Avance en adopción del sistema de trazabilidad digital</li>
-          <li>Disminución de rotación y ausentismo</li>
-          <li>Cultura organizacional abierta al aprendizaje</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="page-footer">
-      <button class="footer-btn outline" onclick="prevPage()">&#8592; Anterior</button>
-      <button class="footer-btn" onclick="nextPage()">Siguiente &#8594;</button>
-    </div>
-  </div>
-</div>
-
-<!-- PAGE 6: CONCLUSIONES -->
-<div class="page" id="page6">
-  <div class="content-wrapper">
-    <div class="chapter-header">
-      <div class="ch-number">Capítulo 6</div>
-      <h2>Conclusiones y Reflexiones</h2>
-    </div>
-
-    <div class="info-card">
-      <h4>&#128218; Reflexión Central</h4>
-      <p>El caso de Cafesur S.A.S. ilustra una realidad común en las organizaciones latinoamericanas: <strong>la dimensión humana del cambio es frecuentemente subestimada</strong>. Las inversiones en tecnología y reestructuración fracasan cuando no van acompañadas de un trabajo profundo sobre las personas.</p>
-    </div>
-
-    <h3>Lecciones Aprendidas</h3>
-    <ul class="styled">
-      <li><strong>El cambio organizacional es un proceso humano:</strong> La tecnología es el medio, las personas son el centro. Sin gestión emocional y relacional, ninguna transformación digital es sostenible (Guadarrama Varón et al., 2023).</li>
-      <li><strong>La comunicación es estratégica:</strong> No es un asunto operativo secundario. La ausencia de comunicación clara, oportuna y bidireccional alimenta la resistencia, los rumores y la desconfianza.</li>
-      <li><strong>El liderazgo marca la diferencia:</strong> Un líder que escucha, acompaña y empodera transforma equipos. Un líder que impone, ignora y exige destruye el compromiso.</li>
-      <li><strong>El coaching es intervención estratégica:</strong> No es un lujo ni una moda. Es una herramienta con evidencia científica que demuestra su eficacia en el desarrollo de capacidades organizacionales (Theeboom et al., 2014; Zeus y Skiffington, 2002).</li>
-      <li><strong>La integración metodológica es clave:</strong> Combinar coaching ontológico, de equipos, GROW y ADKAR permite abordar problemáticas complejas desde múltiples ángulos.</li>
-    </ul>
-
-    <div class="quote-box" style="border-left-color: var(--primary); background: linear-gradient(135deg, #eaf2f8, #ebf5fb); color: var(--primary);">
-      "El verdadero cambio organizacional comienza con la transformación de las personas que componen la organización."
-      <span class="speaker" style="color: var(--secondary);">— Reflexión del ejercicio</span>
-    </div>
-
-    <h3>Valor del Coaching en Procesos de Cambio</h3>
-    <p>El coaching gerencial se posiciona como una herramienta estratégica de alto impacto porque trabaja sobre las <strong>competencias emocionales, relacionales y de liderazgo</strong> que son determinantes en los procesos de cambio, a diferencia de los enfoques tradicionales de capacitación centrados en la transmisión de conocimientos técnicos.</p>
-    <p>La inclusión de embajadores del cambio, la transformación del estilo de liderazgo y la creación de espacios seguros de diálogo son elementos que buscan generar un <strong>impacto sostenible</strong> más allá de la duración formal del programa. Todo ello enmarcado en los principios éticos del coaching profesional (ICF Panamá, 2021; FasterCapital, 2024).</p>
-
-    <div class="info-card" style="border-left-color: var(--coffee);">
-      <h4>&#128214; Recursos Recomendados (Español)</h4>
-      <ul class="styled">
-        <li><a href="https://dialnet.unirioja.es/descarga/articulo/9012786.pdf" target="_blank" style="color:var(--secondary); font-weight:600;">Guadarrama Varón, I. Y. et al. (2023). El liderazgo y el coaching en el cambio organizacional: Una perspectiva desde el factor humano</a> – Artículo académico que analiza cómo el coaching fortalece el liderazgo y promueve la confianza en procesos de transformación.</li>
-        <li><a href="https://vorecol.com/es/articulos/articulo-la-importancia-del-coaching-en-la-gestion-del-cambio-organizacional-1461" target="_blank" style="color:var(--secondary); font-weight:600;">La importancia del coaching en la gestión del cambio organizacional</a> – Artículo sobre cómo el coaching facilita la adaptación al cambio y construye confianza en los equipos.</li>
-        <li><a href="https://coachingequilibrium.com/beneficios-del-coaching-organizacional-en-la-gestion-del-cambio/" target="_blank" style="color:var(--secondary); font-weight:600;">Beneficios del coaching organizacional en la gestión del cambio</a> – Guía práctica sobre el impacto del coaching en la transformación empresarial.</li>
-      </ul>
-    </div>
-
-    <div class="page-footer">
-      <button class="footer-btn outline" onclick="prevPage()">&#8592; Anterior</button>
-      <button class="footer-btn" onclick="nextPage()">Siguiente &#8594;</button>
-    </div>
-  </div>
-</div>
-
-<!-- PAGE 7: REFERENCIAS -->
-<div class="page" id="page7">
-  <div class="content-wrapper">
-    <div class="chapter-header">
-      <div class="ch-number">Capítulo 7</div>
-      <h2>Referencias Bibliográficas</h2>
-    </div>
-
-    <p>Formato APA 7ma edición:</p>
-
-    <ol class="ref-list">
-      <li>Bakke, A. L. y Johansen, A. (2024). How do teams become high-performing teams? <em>Procedia Computer Science</em>. <a href="https://www.sciencedirect.com/science/article/pii/S1877050924014649" target="_blank" style="color:var(--secondary)">https://www.sciencedirect.com/science/article/pii/S1877050924014649</a></li>
-      <li>Echeverría, R. (2003). <em>Ontología del lenguaje</em> (6a ed.). Granica.</li>
-      <li>FasterCapital. (2024). Los principios y valores del coaching ético. <a href="https://fastercapital.com/es/tema/los-principios-y-valores-del-coaching-%C3%A9tico.html" target="_blank" style="color:var(--secondary)">https://fastercapital.com/es/tema/los-principios-y-valores-del-coaching-ético.html</a></li>
-      <li>Grant, A. M. (2014). The efficacy of executive coaching in times of organisational change. <em>Journal of Change Management, 14</em>(2), 258-280. https://doi.org/10.1080/14697017.2013.805159</li>
-      <li>Guadarrama Varón, I. Y., Gómora Miranda, Y. Y. y Caballero Santín, M. (2023). El liderazgo y el coaching en el cambio organizacional: Una perspectiva desde el factor humano. <em>Revista de Gestión y Desarrollo</em>, junio, 1-15. <a href="https://dialnet.unirioja.es/servlet/articulo?codigo=90127869" target="_blank" style="color:var(--secondary)">https://dialnet.unirioja.es/servlet/articulo?codigo=90127869</a></li>
-      <li>Hawkins, P. (2017). <em>Leadership Team Coaching: Developing Collective Transformational Leadership</em> (3rd ed.). Kogan Page.</li>
-      <li>Hersey, P., Blanchard, K. H. y Johnson, D. E. (2013). <em>Management of Organizational Behavior: Leading Human Resources</em> (10th ed.). Pearson.</li>
-      <li>Hiatt, J. M. (2006). <em>ADKAR: A Model for Change in Business, Government and Our Community</em>. Prosci Learning Center Publications.</li>
-      <li>ICF Panamá. (2021). La ética en el ejercicio del coaching. <a href="https://icfpanama.org/la-etica-en-el-ejercicio-del-coaching/" target="_blank" style="color:var(--secondary)">https://icfpanama.org/la-etica-en-el-ejercicio-del-coaching/</a></li>
-      <li>International Coaching Federation [ICF]. (2021). <em>ICF Core Competency Model</em>. <a href="https://coachingfederation.org/credentials-and-standards/core-competencies" target="_blank" style="color:var(--secondary)">https://coachingfederation.org/credentials-and-standards/core-competencies</a></li>
-      <li>Kotter, J. P. (2012). <em>Leading Change</em>. Harvard Business Review Press.</li>
-      <li>Rosinski, P. (2003). <em>Coaching impact study</em>. International Coaching Federation. <a href="https://researchportal.coachingfederation.org/Document/Pdf/2817.pdf" target="_blank" style="color:var(--secondary)">https://researchportal.coachingfederation.org/Document/Pdf/2817.pdf</a></li>
-      <li>Senge, P. M. (2006). <em>The Fifth Discipline: The Art & Practice of The Learning Organization</em> (Rev. ed.). Doubleday.</li>
-      <li>Theeboom, T., Beersma, B. y van Vianen, A. E. M. (2014). Does coaching work? A meta-analysis on the effects of coaching on individual level outcomes. <em>The Journal of Positive Psychology, 9</em>(1), 1-18. https://doi.org/10.1080/17439760.2013.837499</li>
-      <li>Whitmore, J. (2009). <em>Coaching for Performance: GROWing Human Potential and Purpose</em> (4th ed.). Nicholas Brealey Publishing.</li>
-      <li>Zeus, P. y Skiffington, S. (2002). <em>The Coaching at Work Toolkit: A Complete Guide to Techniques and Practices</em>. McGraw-Hill.</li>
-    </ol>
-
-    <div class="page-footer">
-      <button class="footer-btn outline" onclick="prevPage()">&#8592; Anterior</button>
-      <button class="footer-btn" onclick="goTo(0)">&#8962; Volver al Inicio</button>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
 <script>
-let currentPage = 0;
-const totalPages = 8;
+// ====== PAGE CONTENT (each entry = one book page) ======
+const pages = [
+// -- Page 0 (left of spread 1): TABLE OF CONTENTS --
+`<div class="pg-scroll">
+  <div class="ch-label">Contenido</div>
+  <div class="ch-title">Tabla de Contenido</div>
+  <ul class="toc-list">
+    <li onclick="goToSpread(1)"><span class="toc-num">1</span>Introducción al Caso<span class="toc-pg">Pág. 2-3</span></li>
+    <li onclick="goToSpread(3)"><span class="toc-num">2</span>Diagnóstico del Caso<span class="toc-pg">Pág. 4-7</span></li>
+    <li onclick="goToSpread(5)"><span class="toc-num">3</span>Fortalezas, Debilidades, Mejoras<span class="toc-pg">Pág. 8-9</span></li>
+    <li onclick="goToSpread(6)"><span class="toc-num">4</span>Plan de Coaching Estratégico<span class="toc-pg">Pág. 10-13</span></li>
+    <li onclick="goToSpread(8)"><span class="toc-num">5</span>Elementos Metodológicos<span class="toc-pg">Pág. 14-17</span></li>
+    <li onclick="goToSpread(10)"><span class="toc-num">6</span>Resultados y Evaluación<span class="toc-pg">Pág. 18-21</span></li>
+    <li onclick="goToSpread(12)"><span class="toc-num">7</span>Conclusiones y Reflexiones<span class="toc-pg">Pág. 22-23</span></li>
+    <li onclick="goToSpread(13)"><span class="toc-num">8</span>Referencias Bibliográficas<span class="toc-pg">Pág. 24-25</span></li>
+  </ul>
+</div><div class="pg-num">1</div>`,
 
-function goTo(n) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.toc-item').forEach(t => t.classList.remove('active'));
-  document.getElementById('page' + n).classList.add('active');
-  document.querySelectorAll('.toc-item')[n].classList.add('active');
-  currentPage = n;
-  updateIndicator();
-  closeSidebar();
-  document.getElementById('page' + n).scrollTop = 0;
+// -- Page 1: INTRO 1 --
+`<div class="pg-scroll">
+  <div class="ch-label">Capítulo 1</div>
+  <div class="ch-title">Introducción al Caso Organizacional</div>
+  <p>Cafesur S.A.S. es una empresa colombiana ubicada en <strong>Pitalito, Huila</strong>, dedicada a la compra, transformación y comercialización de café especial. Fundada en 2005 como una pequeña cooperativa local, ha logrado un crecimiento sostenido que la llevó a contar con <strong>145 colaboradores</strong> distribuidos en tres sedes. Este caso ilustra lo que Guadarrama Varón et al. (2023) describen como la tensión entre el crecimiento organizacional y la capacidad de gestión del factor humano en procesos de cambio.</p>
+  <div class="card">
+    <h4>&#127981; Estructura Organizacional</h4>
+    <ul class="bul">
+      <li>Gerencia General</li>
+      <li>Dirección de Operaciones</li>
+      <li>Dirección Comercial</li>
+      <li>Dirección de Innovación y Calidad</li>
+      <li>Dirección de Talento Humano</li>
+      <li>Áreas de soporte: logística, finanzas, compras</li>
+    </ul>
+  </div>
+</div><div class="pg-num">2</div>`,
+
+// -- Page 2: INTRO 2 --
+`<div class="pg-scroll">
+  <h3>El Desafío</h3>
+  <p>Entre 2022 y 2024, Cafesur inició un ambicioso proyecto de <strong>transformación digital y reorganización interna</strong>, motivado por exigencias de clientes internacionales y la búsqueda de trazabilidad avanzada. Sin embargo, en lugar del incremento del 20% en productividad esperado, se manifestaron resultados adversos:</p>
+  <div class="stat-row">
+    <div class="stat-box"><span class="sv">&#8593;</span><span class="sl">Alta rotación</span></div>
+    <div class="stat-box orange"><span class="sv">&#9888;</span><span class="sl">Conflictos</span></div>
+    <div class="stat-box red"><span class="sv">&#8987;</span><span class="sl">Retrasos</span></div>
+    <div class="stat-box gray"><span class="sv">&#9729;</span><span class="sl">Clima tenso</span></div>
+  </div>
+  <div class="card warn">
+    <h4>&#9888; Problemáticas Centrales</h4>
+    <p><strong>A. Resistencia al cambio:</strong> Los colaboradores consideran innecesarios los nuevos sistemas digitales. Los mandos medios sienten pérdida de control. Rumores de despidos generan miedo e inacción.</p>
+    <p><strong>B. Mala comunicación interna:</strong> Mensajes poco claros ni oportunos, supervisores que no transmiten información adecuadamente, confusión sobre roles y equipos que trabajan en "silos".</p>
+  </div>
+  <a href="https://vimeo.com/1191333150?share=copy&fl=sv&fe=ci" target="_blank" class="resource-link">&#9654; Ver video: Gestión de cambio organizacional (Vimeo)</a>
+</div><div class="pg-num">3</div>`,
+
+// -- Page 3: DIAGNÓSTICO 1 --
+`<div class="pg-scroll">
+  <div class="ch-label">Capítulo 2</div>
+  <div class="ch-title">Contexto y Diagnóstico del Caso</div>
+  <h3>Escenarios Críticos</h3>
+  <div class="scenario"><div class="sc-head"><div class="sc-n">1</div><div class="sc-t">Comunicación deficiente del cambio</div></div>
+    <p>La Gerencia de Operaciones convocó una reunión sobre el nuevo sistema de trazabilidad digital con apenas horas de anticipación, sin aclarar objetivos ni abrir espacio para preguntas. Según Kotter (2012), la falta de comunicación clara sobre la visión del cambio es una de las principales causas del fracaso en procesos de transformación.</p>
+    <div class="quote">"Nosotros llevamos 15 años haciendo esto igual y funciona. ¿Para qué cambiar lo que está bien?"<span class="spk">— Roberto, Supervisor de Tueste</span></div>
+    <div class="quote">"Si esto falla, ¿a quién le van a echar la culpa? No quiero más responsabilidades sin capacitación."<span class="spk">— Marta, Coordinadora de Calidad</span></div>
+  </div>
+</div><div class="pg-num">4</div>`,
+
+// -- Page 4: DIAGNÓSTICO 2 --
+`<div class="pg-scroll">
+  <div class="scenario"><div class="sc-head"><div class="sc-n">2</div><div class="sc-t">Brecha generacional</div></div>
+    <p>Dos bandos en la planta: <strong>los antiguos</strong> (10+ años, procesos manuales) vs. <strong>los nuevos</strong> (jóvenes, tecnología). Desconfianza mutua que genera errores, reprocesos y retrasos. Bakke y Johansen (2024) demuestran que los equipos de alto rendimiento se construyen integrando perspectivas diversas.</p>
+  </div>
+  <div class="scenario"><div class="sc-head"><div class="sc-n">3</div><div class="sc-t">Liderazgo directivo inadecuado</div></div>
+    <p>Daniela (Directora de Operaciones): instrucciones incompletas, decisiones unilaterales, exigencia de resultados sin acompañamiento. Este estilo contradice los principios del Liderazgo Situacional de Hersey y Blanchard (2013).</p>
+  </div>
+  <div class="scenario"><div class="sc-head"><div class="sc-n">4</div><div class="sc-t">Rumores e incertidumbre</div></div>
+    <p>Rumores de "despidos masivos" sin confirmación oficial. Consecuencias: ausentismo, sabotaje pasivo, menor participación.</p>
+  </div>
+  <div class="scenario"><div class="sc-head"><div class="sc-n">5</div><div class="sc-t">Implementación fallida del piloto digital</div></div>
+    <p>Piloto de registro digital: solo 2 horas de entrenamiento, sin acompañamiento, sin embajador del cambio. Resultado: mal uso del sistema y retorno al papel.</p>
+  </div>
+</div><div class="pg-num">5</div>`,
+
+// -- Page 5: DIAGNÓSTICO 3 - EVIDENCIAS --
+`<div class="pg-scroll">
+  <h3>Evidencias del Diagnóstico Interno</h3>
+  <h4>Resistencia al Cambio</h4>
+  <div class="stat-row">
+    <div class="stat-box red"><span class="sv">63%</span><span class="sl">Prefiere procesos manuales</span></div>
+    <div class="stat-box orange"><span class="sv">48%</span><span class="sl">Cree que habrá despidos</span></div>
+    <div class="stat-box gray"><span class="sv">52%</span><span class="sl">Siente que no lo escuchan</span></div>
+  </div>
+  <h4>Comunicación Interna</h4>
+  <div class="stat-row">
+    <div class="stat-box purple"><span class="sv">70%</span><span class="sl">Comunicación deficiente entre áreas</span></div>
+    <div class="stat-box dark"><span class="sv">58%</span><span class="sl">Instrucciones contradictorias</span></div>
+    <div class="stat-box red"><span class="sv">41%</span><span class="sl">Inseguridad para preguntar</span></div>
+  </div>
+  <div class="card"><p>Estos datos evidencian lo que Senge (2006) describe como una organización que no ha desarrollado la capacidad de aprender colectivamente. La ausencia de seguridad psicológica impide el diálogo abierto y el aprendizaje organizacional necesarios para la transformación.</p></div>
+</div><div class="pg-num">6</div>`,
+
+// -- Page 6: DIAGNÓSTICO 4 - FODA parte 1 --
+`<div class="pg-scroll">
+  <h3>Fortalezas y Debilidades</h3>
+  <div class="card ok">
+    <h4>&#9989; Fortalezas</h4>
+    <ul class="bul">
+      <li>Trayectoria sólida de 19 años con certificaciones y alianzas internacionales.</li>
+      <li>Capital humano experimentado con conocimiento profundo de procesos productivos.</li>
+      <li>Talento joven con competencias tecnológicas para impulsar la transformación digital.</li>
+      <li>Estructura organizacional definida con áreas funcionales claras.</li>
+      <li>Voluntad de la alta gerencia para invertir en coaching externo.</li>
+    </ul>
+  </div>
+  <div class="card warn">
+    <h4>&#9888; Debilidades</h4>
+    <ul class="bul">
+      <li>Liderazgo predominantemente autoritario que inhibe la participación.</li>
+      <li>Ausencia de protocolos formales de comunicación interna.</li>
+      <li>Brecha generacional no gestionada: desconfianza y trabajo en silos.</li>
+      <li>Cultura organizacional resistente al cambio.</li>
+      <li>Gestión deficiente del cambio en experiencias previas.</li>
+      <li>Clima de miedo e incertidumbre por rumores sobre despidos.</li>
+    </ul>
+  </div>
+</div><div class="pg-num">7</div>`,
+
+// -- Page 7: DIAGNÓSTICO 5 - FODA parte 2 --
+`<div class="pg-scroll">
+  <h3>Áreas de Mejora Prioritarias</h3>
+  <div class="card">
+    <h4>&#128736; Áreas de Mejora</h4>
+    <ul class="bul">
+      <li><strong>Comunicación organizacional:</strong> canales formales, protocolos claros y retroalimentación bidireccional.</li>
+      <li><strong>Competencias de liderazgo:</strong> escucha activa, empatía, delegación y acompañamiento.</li>
+      <li><strong>Gestión del cambio:</strong> metodologías estructuradas (ADKAR) para cada etapa de la transición.</li>
+      <li><strong>Integración intergeneracional:</strong> espacios de colaboración y aprendizaje mutuo.</li>
+      <li><strong>Seguridad psicológica:</strong> ambiente para expresar dudas y dar retroalimentación sin temor.</li>
+      <li><strong>Capacitación tecnológica:</strong> entrenamientos suficientes, embajadores del cambio y seguimiento continuo.</li>
+    </ul>
+  </div>
+</div><div class="pg-num">8</div>`,
+
+// -- Page 8: PLAN 1 - OBJETIVO GENERAL --
+`<div class="pg-scroll">
+  <div class="ch-label">Capítulo 3</div>
+  <div class="ch-title">Plan de Coaching Estratégico</div>
+  <div class="card ok">
+    <h4>&#127919; Objetivo General</h4>
+    <p>Reducir en un <strong>40%</strong> los indicadores de resistencia al cambio y mejorar en un <strong>50%</strong> la percepción de comunicación interna efectiva entre los mandos medios y equipos operativos de Cafesur S.A.S., mediante un programa de coaching gerencial integral de <strong>16 semanas</strong>, medido a través de encuestas de clima organizacional.</p>
+  </div>
+  <p class="tbl-label">Tabla 1</p>
+  <p class="tbl-title">Desglose del Objetivo General Según Criterios SMART</p>
+  <table class="apa-tbl">
+    <tr><th>Criterio</th><th>Descripción</th></tr>
+    <tr><td>Specific</td><td>Reducir resistencia al cambio y mejorar comunicación interna en mandos medios</td></tr>
+    <tr><td>Measurable</td><td>Reducción del 40% en resistencia; mejora del 50% en comunicación</td></tr>
+    <tr><td>Achievable</td><td>Basado en benchmarks (Rosinski, 2003; Grant, 2014)</td></tr>
+    <tr><td>Relevant</td><td>Alineado con la transformación digital y productividad</td></tr>
+    <tr><td>Time-bound</td><td>16 semanas con evaluaciones en semanas 8 y 16</td></tr>
+  </table>
+</div><div class="pg-num">9</div>`,
+
+// -- Page 9: PLAN 2 - OBJ ESPECÍFICOS --
+`<div class="pg-scroll">
+  <h3>Objetivos Específicos</h3>
+  <ul class="bul">
+    <li>Incrementar en un 60% las competencias de liderazgo transformacional en los 6 mandos medios, medido a través de evaluación 360° pre y post intervención, durante las semanas 4 a 12.</li>
+    <li>Diseñar e implementar al menos 3 protocolos formales de comunicación interna en las 3 sedes, antes de la semana 10, reduciendo instrucciones contradictorias del 58% al 25%.</li>
+    <li>Reducir en un 50% los conflictos intergeneracionales mediante 4 sesiones de coaching de equipos (semanas 5 a 8), medido por disminución de errores y encuesta de clima.</li>
+    <li>Desarrollar habilidades de gestión emocional del cambio en el 100% de los líderes (6 personas), logrando que al menos el 80% demuestre competencias de escucha activa al finalizar la semana 12.</li>
+    <li>Conformar una red de 8 a 10 embajadores del cambio antes de la semana 4, elevando el uso correcto del sistema digital del 25% al 75% para la semana 16.</li>
+    <li>Evaluar el impacto mediante 3 mediciones cuantitativas y 2 grupos focales, respetando los principios éticos del coaching (ICF Panamá, 2021; FasterCapital, 2024).</li>
+  </ul>
+</div><div class="pg-num">10</div>`,
+
+// -- Page 10: PLAN 3 - FASES 1-2 --
+`<div class="pg-scroll">
+  <h3>Fases del Plan</h3>
+  <div class="phase p1">
+    <div class="ph-label">Fase 1 &bull; Semanas 1-3</div>
+    <h4>Sensibilización y Alineación</h4>
+    <p>Talleres de sensibilización, sesiones individuales de encuadre, comunicado oficial transparente y conformación de embajadores del cambio.</p>
+    <span class="tag blue">Diagnóstico</span><span class="tag green">Confianza</span><span class="tag orange">Comunicación</span>
+  </div>
+  <div class="phase p2">
+    <div class="ph-label">Fase 2 &bull; Semanas 4-8</div>
+    <h4>Desarrollo de Competencias de Liderazgo</h4>
+    <p>Sesiones individuales con modelo GROW, talleres de equipos "Puentes Generacionales" y "Comunicación que Transforma". Se aplican las herramientas del coaching organizacional de Zeus y Skiffington (2002).</p>
+    <span class="tag blue">Modelo GROW</span><span class="tag orange">Coaching Ontológico</span><span class="tag green">Team Coaching</span>
+  </div>
+</div><div class="pg-num">11</div>`,
+
+// -- Page 11: PLAN 4 - FASES 3-4 --
+`<div class="pg-scroll">
+  <div class="phase p3">
+    <div class="ph-label">Fase 3 &bull; Semanas 9-13</div>
+    <h4>Acompañamiento en la Implementación</h4>
+    <p>Coaching en la acción, protocolos de comunicación, coaching especializado con Daniela aplicando Liderazgo Situacional (Hersey y Blanchard, 2013), y espacios de diálogo abierto.</p>
+    <span class="tag blue">Liderazgo Situacional</span><span class="tag orange">Protocolos</span><span class="tag green">Diálogo</span>
+  </div>
+  <div class="phase p4">
+    <div class="ph-label">Fase 4 &bull; Semanas 14-16</div>
+    <h4>Consolidación y Sostenibilidad</h4>
+    <p>Sesiones de cierre, taller "Cafesur Transformado", informe de resultados y plan de seguimiento post-coaching.</p>
+    <span class="tag blue">Evaluación</span><span class="tag green">Sostenibilidad</span><span class="tag orange">Cierre</span>
+  </div>
+</div><div class="pg-num">12</div>`,
+
+// -- Page 12: METODOLOGÍA 1 --
+`<div class="pg-scroll">
+  <div class="ch-label">Capítulo 4</div>
+  <div class="ch-title">Elementos Metodológicos</div>
+  <div class="card"><h4>&#128161; Coaching Ontológico</h4>
+    <p><strong>Autores:</strong> Rafael Echeverría, Julio Olalla</p>
+    <p>Trabaja desde tres dominios: <strong>lenguaje</strong>, <strong>emocionalidad</strong> y <strong>corporalidad</strong>. Las problemáticas de Cafesur tienen raíces en las interpretaciones (juicios sobre el cambio), las emociones (miedo, desconfianza) y las disposiciones corporales de los colaboradores.</p>
+    <p><strong>Aplicación:</strong> Sesiones para explorar creencias limitantes de líderes como Roberto y transformar juicios en posibilidades de acción.</p>
+  </div>
+  <div class="card"><h4>&#129309; Coaching de Equipos</h4>
+    <p><strong>Autor:</strong> Peter Hawkins (2017)</p>
+    <p>Orientado a mejorar el rendimiento colectivo. Bakke y Johansen (2024) confirman que los equipos de alto rendimiento se desarrollan a través de procesos deliberados de construcción de confianza.</p>
+    <p><strong>Aplicación:</strong> Talleres "Puentes Generacionales" con técnica World Café para integrar colaboradores antiguos y nuevos.</p>
+  </div>
+</div><div class="pg-num">13</div>`,
+
+// -- Page 13: METODOLOGÍA 2 - GROW + ADKAR --
+`<div class="pg-scroll">
+  <div class="card"><h4>&#127793; Modelo GROW (Whitmore, 2009)</h4>
+    <p class="tbl-label">Tabla 2</p>
+    <p class="tbl-title">Estructura de Sesiones – Modelo GROW</p>
+    <table class="apa-tbl">
+      <tr><th>Fase</th><th>Significado</th><th>Aplicación</th></tr>
+      <tr><td>Goal</td><td>Meta</td><td>Objetivos de liderazgo alineados con la transformación</td></tr>
+      <tr><td>Reality</td><td>Realidad</td><td>Fortalezas, creencias limitantes y emociones</td></tr>
+      <tr><td>Options</td><td>Opciones</td><td>Nuevas prácticas de comunicación</td></tr>
+      <tr><td>Will</td><td>Voluntad</td><td>Plan de acción con compromisos y plazos</td></tr>
+    </table>
+  </div>
+  <div class="card"><h4>&#128736; Modelo ADKAR (Hiatt, 2006)</h4>
+    <ul class="bul">
+      <li><strong>Awareness:</strong> Conciencia de la necesidad de cambio</li>
+      <li><strong>Desire:</strong> Deseo de participar y apoyar el cambio</li>
+      <li><strong>Knowledge:</strong> Conocimiento de cómo cambiar</li>
+      <li><strong>Ability:</strong> Capacidad de implementar el cambio</li>
+      <li><strong>Reinforcement:</strong> Refuerzo para sostener el cambio</li>
+    </ul>
+    <p><strong>Diagnóstico Cafesur:</strong> La mayoría están estancados entre Awareness y Desire.</p>
+  </div>
+</div><div class="pg-num">14</div>`,
+
+// -- Page 14: METODOLOGÍA 3 - CRONOGRAMA --
+`<div class="pg-scroll">
+  <h3>Cronograma de Sesiones</h3>
+  <p class="tbl-label">Tabla 3</p>
+  <p class="tbl-title">Cronograma General del Programa de Coaching</p>
+  <table class="apa-tbl">
+    <tr><th>Semanas</th><th>Fase</th><th>Actividades Principales</th></tr>
+    <tr><td>1 - 3</td><td>Sensibilización</td><td>Talleres, entrevistas, comunicados, embajadores</td></tr>
+    <tr><td>4 - 8</td><td>Desarrollo</td><td>Sesiones GROW, talleres de equipos</td></tr>
+    <tr><td>9 - 13</td><td>Implementación</td><td>Coaching en acción, protocolos, diálogo</td></tr>
+    <tr><td>14 - 16</td><td>Consolidación</td><td>Cierre, informe, plan de seguimiento</td></tr>
+  </table>
+  <h3>Recurso Multimedia</h3>
+  <a href="https://www.youtube.com/watch?v=UY75MQte4RU" target="_blank" class="resource-link">&#9654; El Modelo GROW explicado – Coaching efectivo (YouTube)</a>
+</div><div class="pg-num">15</div>`,
+
+// -- Page 15: METODOLOGÍA 4 - ÉTICA --
+`<div class="pg-scroll">
+  <h3>Fundamento Ético y Evidencia Científica</h3>
+  <div class="card">
+    <h4>&#128220; Principios Éticos</h4>
+    <p>Todo el proceso de coaching se rige por los principios éticos establecidos por la International Coaching Federation (ICF, 2021), incluyendo la confidencialidad, el respeto a la autonomía del coachee y la responsabilidad profesional (ICF Panamá, 2021; FasterCapital, 2024).</p>
+    <p>La evidencia científica respalda la eficacia del coaching: Theeboom et al. (2014) demostraron que el coaching produce efectos positivos significativos en desempeño, bienestar y autorregulación. Grant (2014) confirmó la eficacia del coaching ejecutivo en contextos de cambio organizacional.</p>
+  </div>
+</div><div class="pg-num">16</div>`,
+
+// -- Page 16: RESULTADOS 1 --
+`<div class="pg-scroll">
+  <div class="ch-label">Capítulo 5</div>
+  <div class="ch-title">Resultados Esperados y Plan de Evaluación</div>
+  <p class="tbl-label">Tabla 4</p>
+  <p class="tbl-title">Indicadores de Evaluación del Programa</p>
+  <table class="apa-tbl">
+    <tr><th>Indicador</th><th>Línea Base</th><th>Meta</th></tr>
+    <tr><td>Preferencia procesos manuales</td><td>63%</td><td>35%</td></tr>
+    <tr><td>Comunicación deficiente</td><td>70%</td><td>30%</td></tr>
+    <tr><td>Temor a despidos</td><td>48%</td><td>15%</td></tr>
+    <tr><td>Seguridad psicológica</td><td>59%</td><td>80%</td></tr>
+    <tr><td>Instrucciones contradictorias</td><td>58%</td><td>20%</td></tr>
+    <tr><td>Adopción tecnológica</td><td>25%</td><td>75%</td></tr>
+  </table>
+</div><div class="pg-num">17</div>`,
+
+// -- Page 17: RESULTADOS 2 --
+`<div class="pg-scroll">
+  <h3>Instrumentos de Medición</h3>
+  <ul class="bul">
+    <li><strong>Encuesta de clima organizacional:</strong> Semanas 0, 8 y 16. Rosinski (2003) y Grant (2014) validan mediciones pre y post intervención.</li>
+    <li><strong>Evaluación 360° de líderes:</strong> Antes y después de la intervención.</li>
+    <li><strong>Registro de sesiones:</strong> Documentación de avances y compromisos.</li>
+    <li><strong>Indicadores operativos:</strong> Productividad, rotación, ausentismo.</li>
+    <li><strong>Grupos focales:</strong> Percepciones cualitativas de colaboradores.</li>
+  </ul>
+  <h3>Momentos de Evaluación</h3>
+  <div class="timeline">
+    <div class="tl-item"><h4>Semana 0 – Línea Base</h4><p>Aplicación de todos los instrumentos para establecer el punto de partida.</p></div>
+    <div class="tl-item"><h4>Semana 8 – Evaluación Intermedia</h4><p>Revisión de avances parciales. Ajuste de estrategias.</p></div>
+    <div class="tl-item"><h4>Semana 16 – Evaluación Final</h4><p>Medición de impacto total. Comparación con línea base.</p></div>
+    <div class="tl-item"><h4>Mes 3 Post-intervención</h4><p>Verificación de sostenibilidad de los cambios.</p></div>
+  </div>
+</div><div class="pg-num">18</div>`,
+
+// -- Page 18: RESULTADOS 3 --
+`<div class="pg-scroll">
+  <h3>Resultados Esperados</h3>
+  <div class="card ok"><h4>A Nivel Individual (Líderes)</h4>
+    <ul class="bul">
+      <li>Transformación del estilo de liderazgo de directivo a participativo</li>
+      <li>Competencias de comunicación asertiva y escucha activa</li>
+      <li>Mayor autoconciencia sobre creencias limitantes</li>
+      <li>Capacidad de gestión emocional ante el cambio</li>
+    </ul>
+  </div>
+  <div class="card ok"><h4>A Nivel Grupal (Equipos)</h4>
+    <ul class="bul">
+      <li>Reducción de la brecha generacional</li>
+      <li>Mejora en dinámicas de trabajo en equipo</li>
+      <li>Red de embajadores del cambio operativa</li>
+    </ul>
+  </div>
+  <div class="card ok"><h4>A Nivel Organizacional</h4>
+    <ul class="bul">
+      <li>Protocolos de comunicación bidireccionales implementados</li>
+      <li>Reducción de rumores y clima de incertidumbre</li>
+      <li>Avance en adopción del sistema de trazabilidad digital</li>
+      <li>Disminución de rotación y ausentismo</li>
+      <li>Cultura organizacional abierta al aprendizaje</li>
+    </ul>
+  </div>
+</div><div class="pg-num">19</div>`,
+
+// -- Page 19: CONCLUSIONES 1 --
+`<div class="pg-scroll">
+  <div class="ch-label">Capítulo 6</div>
+  <div class="ch-title">Conclusiones y Reflexiones</div>
+  <div class="card"><h4>&#128218; Reflexión Central</h4>
+    <p>El caso de Cafesur S.A.S. ilustra una realidad común en las organizaciones latinoamericanas: <strong>la dimensión humana del cambio es frecuentemente subestimada</strong>. Las inversiones en tecnología fracasan cuando no van acompañadas de un trabajo profundo sobre las personas.</p>
+  </div>
+  <h3>Lecciones Aprendidas</h3>
+  <ul class="bul">
+    <li><strong>El cambio organizacional es un proceso humano:</strong> La tecnología es el medio, las personas son el centro (Guadarrama Varón et al., 2023).</li>
+    <li><strong>La comunicación es estratégica:</strong> La ausencia de comunicación clara alimenta la resistencia y desconfianza.</li>
+    <li><strong>El liderazgo marca la diferencia:</strong> Un líder que escucha y empodera transforma equipos.</li>
+    <li><strong>El coaching es intervención estratégica:</strong> Evidencia científica demuestra su eficacia (Theeboom et al., 2014; Zeus y Skiffington, 2002).</li>
+    <li><strong>La integración metodológica es clave:</strong> Combinar coaching ontológico, de equipos, GROW y ADKAR permite abordar problemáticas complejas.</li>
+  </ul>
+</div><div class="pg-num">20</div>`,
+
+// -- Page 20: CONCLUSIONES 2 --
+`<div class="pg-scroll">
+  <div class="quote" style="border-left-color:var(--primary);background:linear-gradient(135deg,#eaf2f8,#ebf5fb);color:var(--primary)">
+    "El verdadero cambio organizacional comienza con la transformación de las personas que componen la organización."
+    <span class="spk" style="color:var(--secondary)">— Reflexión del ejercicio</span>
+  </div>
+  <h3>Valor del Coaching en Procesos de Cambio</h3>
+  <p>El coaching gerencial se posiciona como una herramienta estratégica de alto impacto porque trabaja sobre las <strong>competencias emocionales, relacionales y de liderazgo</strong> que son determinantes en los procesos de cambio.</p>
+  <p>La inclusión de embajadores del cambio, la transformación del estilo de liderazgo y la creación de espacios seguros de diálogo buscan generar un <strong>impacto sostenible</strong> más allá del programa. Todo enmarcado en los principios éticos del coaching profesional (ICF Panamá, 2021; FasterCapital, 2024).</p>
+  <h3>Recursos Recomendados</h3>
+  <a href="https://dialnet.unirioja.es/descarga/articulo/9012786.pdf" target="_blank" class="resource-link">Guadarrama Varón et al. (2023). El liderazgo y el coaching en el cambio organizacional</a>
+  <a href="https://vorecol.com/es/articulos/articulo-la-importancia-del-coaching-en-la-gestion-del-cambio-organizacional-1461" target="_blank" class="resource-link">La importancia del coaching en la gestión del cambio organizacional</a>
+  <a href="https://coachingequilibrium.com/beneficios-del-coaching-organizacional-en-la-gestion-del-cambio/" target="_blank" class="resource-link">Beneficios del coaching organizacional en la gestión del cambio</a>
+</div><div class="pg-num">21</div>`,
+
+// -- Page 21: REFERENCIAS 1 --
+`<div class="pg-scroll">
+  <div class="ch-label">Capítulo 7</div>
+  <div class="ch-title">Referencias Bibliográficas</div>
+  <p style="font-size:.78rem;color:var(--text-light);margin-bottom:10px">Formato APA 7ma edición</p>
+  <ol class="ref-list">
+    <li>Bakke, A. L. y Johansen, A. (2024). How do teams become high-performing teams? <em>Procedia Computer Science</em>. <a href="https://www.sciencedirect.com/science/article/pii/S1877050924014649" target="_blank">https://doi.org/...</a></li>
+    <li>Echeverría, R. (2003). <em>Ontología del lenguaje</em> (6a ed.). Granica.</li>
+    <li>FasterCapital. (2024). Los principios y valores del coaching ético. <a href="https://fastercapital.com/es/tema/los-principios-y-valores-del-coaching-ético.html" target="_blank">https://fastercapital.com/...</a></li>
+    <li>Grant, A. M. (2014). The efficacy of executive coaching in times of organisational change. <em>Journal of Change Management, 14</em>(2), 258-280.</li>
+    <li>Guadarrama Varón, I. Y. et al. (2023). El liderazgo y el coaching en el cambio organizacional. <em>Revista de Gestión y Desarrollo</em>, junio, 1-15.</li>
+    <li>Hawkins, P. (2017). <em>Leadership Team Coaching</em> (3rd ed.). Kogan Page.</li>
+    <li>Hersey, P., Blanchard, K. H. y Johnson, D. E. (2013). <em>Management of Organizational Behavior</em> (10th ed.). Pearson.</li>
+    <li>Hiatt, J. M. (2006). <em>ADKAR: A Model for Change</em>. Prosci Learning Center.</li>
+  </ol>
+</div><div class="pg-num">22</div>`,
+
+// -- Page 22: REFERENCIAS 2 --
+`<div class="pg-scroll">
+  <ol class="ref-list" start="9">
+    <li>ICF Panamá. (2021). La ética en el ejercicio del coaching. <a href="https://icfpanama.org/la-etica-en-el-ejercicio-del-coaching/" target="_blank">https://icfpanama.org/...</a></li>
+    <li>International Coaching Federation [ICF]. (2021). <em>ICF Core Competency Model</em>. <a href="https://coachingfederation.org/credentials-and-standards/core-competencies" target="_blank">https://coachingfederation.org/...</a></li>
+    <li>Kotter, J. P. (2012). <em>Leading Change</em>. Harvard Business Review Press.</li>
+    <li>Rosinski, P. (2003). <em>Coaching impact study</em>. International Coaching Federation.</li>
+    <li>Senge, P. M. (2006). <em>The Fifth Discipline</em> (Rev. ed.). Doubleday.</li>
+    <li>Theeboom, T., Beersma, B. y van Vianen, A. E. M. (2014). Does coaching work? A meta-analysis. <em>The Journal of Positive Psychology, 9</em>(1), 1-18.</li>
+    <li>Whitmore, J. (2009). <em>Coaching for Performance</em> (4th ed.). Nicholas Brealey.</li>
+    <li>Zeus, P. y Skiffington, S. (2002). <em>The Coaching at Work Toolkit</em>. McGraw-Hill.</li>
+  </ol>
+</div><div class="pg-num">23</div>`
+];
+
+// ====== SPREAD LOGIC WITH PAGE-FLIP ANIMATION ======
+const totalSpreads = Math.ceil(pages.length / 2) + 2;
+let currentSpread = 0;
+let isAnimating = false;
+const FLIP_DURATION = 700; // ms
+
+const coverView = document.getElementById('coverView');
+const backCover = document.getElementById('backCover');
+const spreadView = document.getElementById('spreadView');
+const pageLeft = document.getElementById('pageLeft');
+const pageRight = document.getElementById('pageRight');
+const spreadBook = document.querySelector('.spread-book');
+
+function getPageHTML(idx) {
+  return idx >= 0 && idx < pages.length ? pages[idx] : '<div class="pg-scroll"></div>';
 }
 
-function nextPage() { if (currentPage < totalPages - 1) goTo(currentPage + 1); }
-function prevPage() { if (currentPage > 0) goTo(currentPage - 1); }
-
-function updateIndicator() {
-  document.getElementById('pageIndicator').textContent = (currentPage + 1) + ' / ' + totalPages;
-  document.getElementById('progressFill').style.width = ((currentPage + 1) / totalPages * 100) + '%';
-  document.getElementById('homeBtn').style.display = currentPage === 0 ? 'none' : 'inline-block';
+function setSpreadContent(n) {
+  const li = (n - 1) * 2, ri = li + 1;
+  pageLeft.innerHTML = getPageHTML(li);
+  pageRight.innerHTML = getPageHTML(ri);
 }
 
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
+function showCover() {
+  coverView.style.display = 'block';
+  coverView.classList.remove('opening');
+  backCover.style.display = 'none';
+  spreadView.classList.remove('active');
+  spreadView.style.display = 'none';
+  currentSpread = 0;
+  updateNav();
 }
 
-function showTab(id) {
-  const btn = event.target;
-  const parent = btn.parentElement;
-  parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  
-  let sibling = parent.nextElementSibling;
-  while (sibling && sibling.classList.contains('tab-content')) {
-    sibling.classList.remove('active');
-    sibling = sibling.nextElementSibling;
+function showBackCover() {
+  coverView.style.display = 'none';
+  backCover.style.display = 'block';
+  backCover.querySelector('.back-inner').parentElement.classList.add('back-cover-enter');
+  spreadView.classList.remove('active');
+  spreadView.style.display = 'none';
+  currentSpread = totalSpreads - 1;
+  updateNav();
+}
+
+function showSpreadInstant(n) {
+  coverView.style.display = 'none';
+  backCover.style.display = 'none';
+  spreadView.style.display = 'flex';
+  setTimeout(() => spreadView.classList.add('active'), 10);
+  setSpreadContent(n);
+  currentSpread = n;
+  updateNav();
+}
+
+// ====== FLIP ANIMATION ======
+function flipForward(fromSpread, toSpread) {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  // Content indices for the flip
+  const oldRightIdx = (fromSpread - 1) * 2 + 1;
+  const newLeftIdx = (toSpread - 1) * 2;
+
+  // Create flip overlay
+  const flip = document.createElement('div');
+  flip.className = 'flip-overlay forward';
+  flip.innerHTML =
+    '<div class="flip-front">' + getPageHTML(oldRightIdx) + '<div class="flip-shadow"></div></div>' +
+    '<div class="flip-back">' + getPageHTML(newLeftIdx) + '<div class="flip-shadow"></div></div>';
+  flip.style.transformStyle = 'preserve-3d';
+  flip.style.transition = `transform ${FLIP_DURATION}ms cubic-bezier(.4,.05,.15,.97)`;
+  flip.style.transform = 'rotateY(0deg)';
+  spreadBook.style.overflow = 'visible';
+  spreadBook.appendChild(flip);
+
+  // Hide the real right page during animation
+  pageRight.style.visibility = 'hidden';
+
+  // Create shadow on left page
+  const shadow = document.createElement('div');
+  shadow.className = 'book-shadow-overlay right-shadow';
+  pageLeft.appendChild(shadow);
+
+  // Trigger the flip
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      flip.style.transform = 'rotateY(-180deg)';
+      shadow.style.opacity = '1';
+      shadow.style.transition = `opacity ${FLIP_DURATION * 0.4}ms ease ${FLIP_DURATION * 0.3}ms`;
+      setTimeout(() => { shadow.style.opacity = '0'; }, FLIP_DURATION * 0.5);
+    });
+  });
+
+  setTimeout(() => {
+    spreadBook.removeChild(flip);
+    if (shadow.parentNode) shadow.parentNode.removeChild(shadow);
+    spreadBook.style.overflow = 'hidden';
+    setSpreadContent(toSpread);
+    pageRight.style.visibility = 'visible';
+    currentSpread = toSpread;
+    updateNav();
+    isAnimating = false;
+  }, FLIP_DURATION + 50);
+}
+
+function flipBackward(fromSpread, toSpread) {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  const oldLeftIdx = (fromSpread - 1) * 2;
+  const newRightIdx = (toSpread - 1) * 2 + 1;
+
+  const flip = document.createElement('div');
+  flip.className = 'flip-overlay backward';
+  flip.innerHTML =
+    '<div class="flip-front">' + getPageHTML(oldLeftIdx) + '<div class="flip-shadow"></div></div>' +
+    '<div class="flip-back">' + getPageHTML(newRightIdx) + '<div class="flip-shadow"></div></div>';
+  flip.style.transformStyle = 'preserve-3d';
+  flip.style.transition = `transform ${FLIP_DURATION}ms cubic-bezier(.4,.05,.15,.97)`;
+  flip.style.transform = 'rotateY(-180deg)';
+  spreadBook.style.overflow = 'visible';
+  spreadBook.appendChild(flip);
+
+  pageLeft.style.visibility = 'hidden';
+
+  const shadow = document.createElement('div');
+  shadow.className = 'book-shadow-overlay left-shadow';
+  pageRight.appendChild(shadow);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      flip.style.transform = 'rotateY(0deg)';
+      shadow.style.opacity = '1';
+      shadow.style.transition = `opacity ${FLIP_DURATION * 0.4}ms ease ${FLIP_DURATION * 0.3}ms`;
+      setTimeout(() => { shadow.style.opacity = '0'; }, FLIP_DURATION * 0.5);
+    });
+  });
+
+  setTimeout(() => {
+    spreadBook.removeChild(flip);
+    if (shadow.parentNode) shadow.parentNode.removeChild(shadow);
+    spreadBook.style.overflow = 'hidden';
+    setSpreadContent(toSpread);
+    pageLeft.style.visibility = 'visible';
+    currentSpread = toSpread;
+    updateNav();
+    isAnimating = false;
+  }, FLIP_DURATION + 50);
+}
+
+// ====== NAVIGATION ======
+function openBook() {
+  coverView.classList.add('opening');
+  setTimeout(() => {
+    coverView.style.display = 'none';
+    spreadView.style.display = 'flex';
+    setTimeout(() => spreadView.classList.add('active'), 20);
+    setSpreadContent(1);
+    currentSpread = 1;
+    updateNav();
+  }, 500);
+}
+
+function goToSpread(n) {
+  if (isAnimating) return;
+  document.getElementById('tocPanel').classList.remove('open');
+  const maxContent = Math.ceil(pages.length / 2);
+
+  if (n <= 0) { showCover(); return; }
+  if (n > maxContent) { showBackCover(); return; }
+
+  // If coming from cover
+  if (currentSpread === 0) { openBook(); return; }
+  // If coming from back cover
+  if (currentSpread >= totalSpreads - 1) {
+    backCover.style.display = 'none';
+    showSpreadInstant(n);
+    return;
   }
-  document.getElementById('tab-' + id).classList.add('active');
+  // If same spread
+  if (n === currentSpread) return;
+  // Adjacent spread: animate
+  if (n === currentSpread + 1) { flipForward(currentSpread, n); return; }
+  if (n === currentSpread - 1) { flipBackward(currentSpread, n); return; }
+  // Far jump: instant
+  showSpreadInstant(n);
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') nextPage();
-  if (e.key === 'ArrowLeft') prevPage();
+function next() { goToSpread(currentSpread + 1); }
+function prev() { goToSpread(currentSpread - 1); }
+
+function updateNav() {
+  document.getElementById('prevBtn').disabled = currentSpread <= 0;
+  document.getElementById('nextBtn').disabled = currentSpread >= totalSpreads - 1;
+  let label;
+  if (currentSpread === 0) label = 'Portada';
+  else if (currentSpread >= totalSpreads - 1) label = 'Contraportada';
+  else {
+    const l = (currentSpread - 1) * 2 + 1;
+    const r = Math.min(l + 1, pages.length);
+    label = 'Pág. ' + l + '-' + r + ' / ' + pages.length;
+  }
+  document.getElementById('pgInfo').textContent = label;
+  const chSpreads = [0,1,3,5,6,8,10,12,13];
+  document.querySelectorAll('.toc-panel .ti').forEach((el, i) => {
+    el.classList.toggle('active', currentSpread >= chSpreads[i] && (i === chSpreads.length-1 || currentSpread < chSpreads[i+1]));
+  });
+}
+
+function toggleToc() { document.getElementById('tocPanel').classList.toggle('open'); }
+
+document.addEventListener('click', e => {
+  const p = document.getElementById('tocPanel'), b = document.querySelector('.toc-btn');
+  if (!p.contains(e.target) && e.target !== b) p.classList.remove('open');
 });
 
-updateIndicator();
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+});
+
+updateNav();
 </script>
 </body>
 </html>
